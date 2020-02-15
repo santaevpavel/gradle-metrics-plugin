@@ -1,6 +1,17 @@
-plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.3.21'
+buildscript {
+    repositories {
+        flatDir dirs: "$rootDir/plugin/build/libs"
+    }
+    dependencies {
+        classpath "ru.santaev.gradle-metrics-plugin:plugin:0.1.0"
+    }
 }
+
+plugins {
+    id 'org.jetbrains.kotlin.jvm'
+}
+
+apply plugin: 'ru.santaev.gradle-metrics-plugin'
 
 group 'ru.santaev.gradle-metrics-plugin'
 version '0.1.0'

@@ -1,2 +1,4 @@
 rootProject.name = 'gradle-metrics-plugin'
+include 'plugin'
+include 'sample'
 
