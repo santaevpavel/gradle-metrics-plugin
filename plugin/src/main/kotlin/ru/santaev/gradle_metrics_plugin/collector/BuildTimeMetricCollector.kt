@@ -8,6 +8,7 @@ import org.gradle.api.execution.TaskExecutionListener
 import org.gradle.api.initialization.Settings
 import org.gradle.api.invocation.Gradle
 import org.gradle.api.tasks.TaskState
+import ru.santaev.gradle_metrics_plugin.DoubleMetric
 import ru.santaev.gradle_metrics_plugin.IMetricsStore
 import ru.santaev.gradle_metrics_plugin.Metric
 import ru.santaev.gradle_metrics_plugin.MetricUnit
@@ -25,7 +26,7 @@ class BuildTimeMetricCollector: IMetricsCollector {
 
     private fun collectBuildTime(metricsStore: IMetricsStore, buildTimeMillis: Long) {
         metricsStore.add(
-            Metric(
+            DoubleMetric(
                 id = BUILD_TIME_METRIC_ID,
                 value = buildTimeMillis / 1000.0,
                 unit = MetricUnit.Seconds
@@ -48,7 +49,6 @@ private class BuildTimeCalculatorListener(
     private var isBuildStarted = false
 
     override fun settingsEvaluated(settings: Settings) {
-        logger.error("settingsEvaluated")
     }
 
     override fun buildFinished(result: BuildResult) {
@@ -66,7 +66,6 @@ private class BuildTimeCalculatorListener(
     }
 
     override fun beforeExecute(task: Task) {
-        logger.warn("beforeExecute ${task.name}")
         if (!isBuildStarted) {
             isBuildStarted = true
             beforeFirstTaskExecute()
@@ -74,7 +73,6 @@ private class BuildTimeCalculatorListener(
     }
 
     override fun afterExecute(task: Task, state: TaskState) {
-        logger.warn("settingsEvaluated ${task.name}")
     }
 
     private fun beforeFirstTaskExecute() {

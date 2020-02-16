@@ -23,9 +23,30 @@ data class Metric(
     val unit: MetricUnit
 )
 
-sealed class MetricUnit(val value: String) {
+sealed class MetricUnit(val name: String) {
 
-    object None: MetricUnit("")
+    object None : MetricUnit("")
 
-    object Seconds: MetricUnit("Sec")
+    object Seconds : MetricUnit("seconds")
+
+    object Pieces : MetricUnit("pieces")
+
+    class Custom(name: String) : MetricUnit(name)
+
+}
+
+fun LongMetric(
+    id: String,
+    value: Long,
+    unit: MetricUnit
+) : Metric {
+    return Metric(id, value, unit)
+}
+
+fun DoubleMetric(
+    id: String,
+    value: Double,
+    unit: MetricUnit
+) : Metric {
+    return Metric(id, value, unit)
 }

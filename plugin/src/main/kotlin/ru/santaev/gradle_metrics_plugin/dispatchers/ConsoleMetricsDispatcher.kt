@@ -9,7 +9,7 @@ class ConsoleMetricsDispatcher : IMetricsDispatcher {
             appendln(">>>>>>>>>> Metrics output <<<<<<<<<")
             metrics.forEach { metric ->
                 append("\t").append(metric.id)
-                append("\t\t\t").append(metric.value).appendln(" ${metric.unit.value}")
+                append("\t\t\t").append(metric.value).appendln(" ${metric.unit.name}")
             }
             appendln()
             appendln(">>>>>>>>>> Metrics output <<<<<<<<<")
