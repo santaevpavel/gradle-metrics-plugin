@@ -1,80 +1,69 @@
 package ru.santaev.gradle_metrics_plugin.collector
 
-import org.gradle.BuildListener
-import org.gradle.BuildResult
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.execution.TaskExecutionListener
-import org.gradle.api.initialization.Settings
-import org.gradle.api.invocation.Gradle
 import org.gradle.api.tasks.TaskState
-import ru.santaev.gradle_metrics_plugin.*
+import ru.santaev.gradle_metrics_plugin.IMetricsStore
+import ru.santaev.gradle_metrics_plugin.LongMetric
+import ru.santaev.gradle_metrics_plugin.MetricUnit
 import ru.santaev.gradle_metrics_plugin.utils.logger
 
-class TasksCountMetricCollector : IMetricsCollector {
+class TasksCountMetricCollector : BaseMetricCollector() {
 
-    private var metricsStore: IMetricsStore? = null
+    private val logger = logger(this)
+    private var tasksCounter: TasksCountMetricCollectorListener? = null
 
-    override fun collect(metricsStore: IMetricsStore, project: Project) {
-        this.metricsStore = metricsStore
-        project.gradle.addBuildListener(TasksCountMetricCollectorListener())
+    override fun init(metricsStore: IMetricsStore, project: Project) {
+        super.init(metricsStore, project)
+        tasksCounter = TasksCountMetricCollectorListener().also { listener ->
+            project.gradle.addListener(listener)
+        }
     }
 
-    private fun collectMetrics(listener: TasksCountMetricCollectorListener) {
+    override fun onBuildFinish() {
+        super.onBuildFinish()
+        collectMetrics()
+    }
+
+    private fun collectMetrics() {
+        val tasksCounter = tasksCounter ?: return
         metricsStore?.add(
             LongMetric(
                 id = TASKS_COUNT_METRIC_ID,
-                value = listener.tasksCount.toLong(),
+                value = tasksCounter.tasksCount.toLong(),
                 unit = MetricUnit.Pieces
             )
         )
         metricsStore?.add(
             LongMetric(
                 id = SUCCESSFUL_TASKS_COUNT_METRIC_ID,
-                value = listener.successfulTaskCount.toLong(),
+                value = tasksCounter.successfulTaskCount.toLong(),
                 unit = MetricUnit.Pieces
             )
         )
         metricsStore?.add(
             LongMetric(
                 id = UP_TO_DATE_TASKS_COUNT_METRIC_ID,
-                value = listener.upToDateTaskCount.toLong(),
+                value = tasksCounter.upToDateTaskCount.toLong(),
                 unit = MetricUnit.Pieces
             )
         )
         metricsStore?.add(
             LongMetric(
                 id = FAILED_TASKS_COUNT_METRIC_ID,
-                value = listener.failedTaskCount.toLong(),
+                value = tasksCounter.failedTaskCount.toLong(),
                 unit = MetricUnit.Pieces
             )
         )
     }
 
-    private inner class TasksCountMetricCollectorListener : BuildListener, TaskExecutionListener {
+    private inner class TasksCountMetricCollectorListener : TaskExecutionListener {
 
         var tasksCount = 0
         var successfulTaskCount = 0
         var upToDateTaskCount = 0
         var failedTaskCount = 0
-        private val logger = logger(this)
-
-
-        override fun settingsEvaluated(settings: Settings) {
-        }
-
-        override fun buildFinished(result: BuildResult) {
-            collectMetrics(this)
-        }
-
-        override fun projectsLoaded(gradle: Gradle) {
-        }
-
-        override fun buildStarted(gradle: Gradle) {
-        }
-
-        override fun projectsEvaluated(gradle: Gradle) {
-        }
 
         override fun beforeExecute(task: Task) {
             tasksCount++
