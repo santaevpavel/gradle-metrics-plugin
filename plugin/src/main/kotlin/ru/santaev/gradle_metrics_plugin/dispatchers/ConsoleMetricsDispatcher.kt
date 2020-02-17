@@ -12,7 +12,6 @@ class ConsoleMetricsDispatcher : IMetricsDispatcher {
                 append("\t\t\t").append(metric.value).appendln(" ${metric.unit.name}")
             }
             appendln()
-            appendln(">>>>>>>>>> Metrics output <<<<<<<<<")
         }
         println(output)
     }

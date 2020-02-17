@@ -3,16 +3,20 @@ package ru.santaev.gradle_metrics_plugin
 import org.gradle.BuildResult
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.invocation.Gradle
 import ru.santaev.gradle_metrics_plugin.collector.BuildTimeMetricCollector
 import ru.santaev.gradle_metrics_plugin.collector.IMetricsCollector
 import ru.santaev.gradle_metrics_plugin.collector.TasksCountMetricCollector
 import ru.santaev.gradle_metrics_plugin.dispatchers.ConsoleMetricsDispatcher
 import ru.santaev.gradle_metrics_plugin.dispatchers.IMetricsDispatcher
 import ru.santaev.gradle_metrics_plugin.utils.BuildListenerAdapter
+import ru.santaev.gradle_metrics_plugin.utils.logger
 
 
 @Suppress("UnstableApiUsage")
 class GradleMetricsPlugin : Plugin<Project> {
+
+    private val logger = logger(this)
 
     private val metricsStore = MetricsStore()
     private val dispatchers = listOf<IMetricsDispatcher>(
@@ -27,18 +31,37 @@ class GradleMetricsPlugin : Plugin<Project> {
         collectors.forEach { collector ->
             collector.init(metricsStore, project)
         }
-        initBuildFinishListener(project)
+        initBuildListener(project)
 
     }
 
-    private fun initBuildFinishListener(project: Project) {
+    private fun initBuildListener(project: Project) {
         project.gradle.addListener(
             object : BuildListenerAdapter() {
                 override fun buildFinished(result: BuildResult) {
                     dispatchMetrics()
                 }
+
+                override fun projectsEvaluated(gradle: Gradle) {
+                    super.projectsEvaluated(gradle)
+                    logCollectorsAndDispatchers()
+                }
             }
         )
+    }
+
+    private fun logCollectorsAndDispatchers() {
+        val log = buildString {
+            appendln("Metric collectors:")
+            collectors.forEach { collector ->
+                appendln("\t- ${collector::class.java.simpleName}")
+            }
+            appendln("Metric dispatchers:")
+            dispatchers.forEach { dispatcher ->
+                appendln("\t- ${dispatcher::class.java.simpleName}")
+            }
+        }
+        logger.info(log)
     }
 
     private fun dispatchMetrics() {
