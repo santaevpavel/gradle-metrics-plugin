@@ -1,16 +1,14 @@
 package ru.santaev.gradle_metrics_plugin.collector
 
-import org.gradle.BuildListener
 import org.gradle.BuildResult
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.execution.TaskExecutionListener
-import org.gradle.api.initialization.Settings
-import org.gradle.api.invocation.Gradle
 import org.gradle.api.tasks.TaskState
 import ru.santaev.gradle_metrics_plugin.DoubleMetric
 import ru.santaev.gradle_metrics_plugin.IMetricsStore
 import ru.santaev.gradle_metrics_plugin.MetricUnit
+import ru.santaev.gradle_metrics_plugin.utils.BuildListenerAdapter
 import ru.santaev.gradle_metrics_plugin.utils.logger
 
 class BuildTimeMetricCollector: IMetricsCollector {
@@ -43,26 +41,14 @@ class BuildTimeMetricCollector: IMetricsCollector {
 
 private class BuildTimeCalculatorListener(
     private val onBuildFinished: (buildTimeMillis: Long) -> Unit
-): BuildListener, TaskExecutionListener {
+): BuildListenerAdapter(), TaskExecutionListener {
 
     private var buildStartTime = 0L
     private var isBuildStarted = false
 
-    override fun settingsEvaluated(settings: Settings) {
-    }
-
     override fun buildFinished(result: BuildResult) {
         val buildTime = System.currentTimeMillis() - buildStartTime
         onBuildFinished(buildTime)
-    }
-
-    override fun projectsLoaded(gradle: Gradle) {
-    }
-
-    override fun buildStarted(gradle: Gradle) {
-    }
-
-    override fun projectsEvaluated(gradle: Gradle) {
     }
 
     override fun beforeExecute(task: Task) {
