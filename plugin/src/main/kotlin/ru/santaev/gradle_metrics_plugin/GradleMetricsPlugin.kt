@@ -4,10 +4,7 @@ import org.gradle.BuildResult
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.invocation.Gradle
-import ru.santaev.gradle_metrics_plugin.collector.BuildTimeMetricCollector
-import ru.santaev.gradle_metrics_plugin.collector.IMetricsCollector
-import ru.santaev.gradle_metrics_plugin.collector.JUnitTestMetricsCollector
-import ru.santaev.gradle_metrics_plugin.collector.TasksCountMetricCollector
+import ru.santaev.gradle_metrics_plugin.collector.*
 import ru.santaev.gradle_metrics_plugin.dispatchers.ConsoleMetricsDispatcher
 import ru.santaev.gradle_metrics_plugin.dispatchers.IMetricsDispatcher
 import ru.santaev.gradle_metrics_plugin.utils.BuildListenerAdapter
@@ -26,7 +23,8 @@ class GradleMetricsPlugin : Plugin<Project> {
     private val collectors = listOf<IMetricsCollector>(
         BuildTimeMetricCollector(),
         TasksCountMetricCollector(),
-        JUnitTestMetricsCollector()
+        JUnitTestMetricsCollector(),
+        JarFileSizeMetricCollector()
     )
 
     override fun apply(project: Project) {
