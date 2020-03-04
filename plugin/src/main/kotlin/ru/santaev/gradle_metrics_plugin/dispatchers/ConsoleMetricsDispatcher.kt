@@ -6,11 +6,15 @@ class ConsoleMetricsDispatcher : IMetricsDispatcher {
 
     override fun dispatch(metrics: List<Metric>) {
         val output = buildString {
-            appendln(">>>>>>>>>> Metrics output <<<<<<<<<")
+            appendln("\t-----------------------------------------------")
+            appendln("\t--------------- Metrics output ----------------")
+            appendln(String.format("\t%-25s %-10s %s", "-------------------------", "----------", "----------"))
+            appendln(String.format("\t%-25s %-10s %s", "Metric id", "Value", "Unit"))
+            appendln(String.format("\t%-25s %-10s %s", "-------------------------", "----------", "----------"))
             metrics.forEach { metric ->
-                append("\t").append(metric.id)
-                append("\t\t\t").append(metric.value).appendln(" ${metric.unit.name}")
+                appendln(String.format("\t%-25s %-10s %s", metric.id, metric.value, metric.unit.name))
             }
+            appendln(String.format("\t%-25s %-10s %s", "-------------------------", "----------", "----------"))
             appendln()
         }
         println(output)
