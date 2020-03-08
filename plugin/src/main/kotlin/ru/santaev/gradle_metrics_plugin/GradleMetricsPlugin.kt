@@ -26,13 +26,14 @@ class GradleMetricsPlugin : Plugin<Project> {
         JUnitTestMetricsCollector(),
         JarFileSizeMetricCollector()
     )
+    private lateinit var extension: GradleMetricsPluginExtension
 
     override fun apply(project: Project) {
+        extension = project.extensions.create(EXTENSION_NAME, GradleMetricsPluginExtension::class.java)
         collectors.forEach { collector ->
             collector.init(metricsStore, project)
         }
         initBuildListener(project)
-
     }
 
     private fun initBuildListener(project: Project) {
@@ -51,6 +52,10 @@ class GradleMetricsPlugin : Plugin<Project> {
     }
 
     private fun logCollectorsAndDispatchers() {
+        println(
+            "Configured metric collectors   " +
+                    extension.collectorsCreationDsl.collectorConfigurations.joinToString(", ")
+        )
         val log = buildString {
             appendln("Metric collectors:")
             collectors.forEach { collector ->
@@ -68,5 +73,9 @@ class GradleMetricsPlugin : Plugin<Project> {
         dispatchers.forEach { dispatcher ->
             dispatcher.dispatch(metricsStore.getMetrics())
         }
+    }
+
+    companion object {
+        private const val EXTENSION_NAME = "gradleMetricsPlugin"
     }
 }
