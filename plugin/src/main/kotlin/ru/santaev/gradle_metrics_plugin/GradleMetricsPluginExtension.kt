@@ -4,14 +4,14 @@ import org.gradle.api.Action
 
 open class GradleMetricsPluginExtension {
 
-    val collectorsCreationDsl = CollectorsCreationDsl()
+    val collectorsCreationDsl = CollectorsConfigurationDsl()
 
-    fun collectors(collectorsCreationAction: Action<CollectorsCreationDsl>) {
-        collectorsCreationAction.execute(collectorsCreationDsl)
+    fun collectors(collectorsConfigurationAction: Action<CollectorsConfigurationDsl>) {
+        collectorsConfigurationAction.execute(collectorsCreationDsl)
     }
 }
 
-class CollectorsCreationDsl {
+class CollectorsConfigurationDsl {
 
     val collectorConfigurations = mutableListOf<CollectorConfiguration>()
 

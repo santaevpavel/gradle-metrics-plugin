@@ -1,6 +1,7 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm'
-    id 'groovy'
+    id 'maven-publish'
+    id 'com.github.johnrengelman.shadow'
 }
 
 group 'ru.santaev.gradle-metrics-plugin'
@@ -11,14 +12,32 @@ repositories {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    implementation gradleApi()
-    implementation localGroovy()
+    shadow "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation project(path: ':plugin-api')
+    shadow gradleApi()
+    shadow localGroovy()
 }
 
 compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
+
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+publishing {
+    repositories {
+        maven {
+            url = "$buildDir/repo"
+        }
+    }
+    publications {
+        maven(MavenPublication) { publication ->
+            artifact tasks.getByName("shadowJar")
+            groupId 'ru.santaev.gradle-metrics-plugin'
+            artifactId 'gradle-metrics-plugin'
+            version '0.1.0'
+        }
+    }
 }

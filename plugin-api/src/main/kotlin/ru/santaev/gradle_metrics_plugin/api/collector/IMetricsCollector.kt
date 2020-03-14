@@ -1,7 +1,7 @@
-package ru.santaev.gradle_metrics_plugin.collector
+package ru.santaev.gradle_metrics_plugin.api.collector
 
 import org.gradle.api.Project
-import ru.santaev.gradle_metrics_plugin.IMetricsStore
+import ru.santaev.gradle_metrics_plugin.api.IMetricsStore
 
 interface IMetricsCollector {
 

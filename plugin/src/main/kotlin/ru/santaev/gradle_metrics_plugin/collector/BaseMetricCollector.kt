@@ -2,7 +2,8 @@ package ru.santaev.gradle_metrics_plugin.collector
 
 import org.gradle.BuildResult
 import org.gradle.api.Project
-import ru.santaev.gradle_metrics_plugin.IMetricsStore
+import ru.santaev.gradle_metrics_plugin.api.IMetricsStore
+import ru.santaev.gradle_metrics_plugin.api.collector.IMetricsCollector
 import ru.santaev.gradle_metrics_plugin.utils.BuildListenerAdapter
 
 abstract class BaseMetricCollector: IMetricsCollector {

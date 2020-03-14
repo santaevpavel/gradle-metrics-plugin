@@ -1,8 +1,8 @@
 package ru.santaev.gradle_metrics_plugin.collector
 
 import org.gradle.api.Project
-import ru.santaev.gradle_metrics_plugin.LongMetric
-import ru.santaev.gradle_metrics_plugin.MetricUnit
+import ru.santaev.gradle_metrics_plugin.api.LongMetric
+import ru.santaev.gradle_metrics_plugin.api.MetricUnit
 import ru.santaev.gradle_metrics_plugin.utils.sizeOnKilobytes
 import java.io.File
 

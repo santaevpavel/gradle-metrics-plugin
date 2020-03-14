@@ -3,7 +3,7 @@ buildscript {
         flatDir dirs: "$rootDir/plugin/build/libs"
     }
     dependencies {
-        classpath "ru.santaev.gradle-metrics-plugin:plugin:0.1.0"
+        classpath "ru.santaev.gradle-metrics-plugin:plugin:0.1.0-all"
     }
 }
 
@@ -23,6 +23,7 @@ repositories {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     testImplementation "junit:junit:4.12"
+    // metrics "junit:junit:4.10"
 }
 
 compileKotlin {
@@ -33,8 +34,9 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
+/*
 gradleMetricsPlugin {
     collectors {
         id "TaskCount"
     }
-}
+}*/
