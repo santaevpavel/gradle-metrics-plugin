@@ -7,6 +7,7 @@ import org.gradle.api.tasks.TaskState
 import ru.santaev.gradle_metrics_plugin.api.IMetricsStore
 import ru.santaev.gradle_metrics_plugin.api.LongMetric
 import ru.santaev.gradle_metrics_plugin.api.MetricUnit
+import ru.santaev.gradle_metrics_plugin.api.collector.BaseMetricCollector
 import ru.santaev.gradle_metrics_plugin.utils.logger
 
 class TasksCountMetricCollector : BaseMetricCollector() {

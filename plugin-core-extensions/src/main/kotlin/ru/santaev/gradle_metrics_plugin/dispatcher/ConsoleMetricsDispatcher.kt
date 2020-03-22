@@ -1,7 +1,7 @@
-package ru.santaev.gradle_metrics_plugin.dispatchers
+package ru.santaev.gradle_metrics_plugin.dispatcher
 
 import ru.santaev.gradle_metrics_plugin.api.Metric
-import ru.santaev.gradle_metrics_plugin.api.dispatchers.IMetricsDispatcher
+import ru.santaev.gradle_metrics_plugin.api.dispatcher.IMetricsDispatcher
 
 class ConsoleMetricsDispatcher : IMetricsDispatcher {
 

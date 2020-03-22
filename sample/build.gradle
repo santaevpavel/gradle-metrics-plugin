@@ -1,9 +1,12 @@
 buildscript {
     repositories {
-        flatDir dirs: "$rootDir/plugin/build/libs"
+        /*flatDir dirs: "$rootDir/plugin/build/libs"*/
+        maven {
+            url = rootProject.localMavenPath
+        }
     }
     dependencies {
-        classpath "ru.santaev.gradle-metrics-plugin:plugin:0.1.0-all"
+        classpath "ru.santaev.gradle-metrics-plugin:gradle-metrics-plugin:0.1.0"
     }
 }
 
@@ -18,12 +21,15 @@ version '0.1.0'
 
 repositories {
     mavenCentral()
+    maven {
+        url = rootProject.localMavenPath
+    }
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     testImplementation "junit:junit:4.12"
-    // metrics "junit:junit:4.10"
+    gradleMetricsPluginExtension "ru.santaev.gradle-metrics-plugin:core-extension:0.1.0"
 }
 
 compileKotlin {
