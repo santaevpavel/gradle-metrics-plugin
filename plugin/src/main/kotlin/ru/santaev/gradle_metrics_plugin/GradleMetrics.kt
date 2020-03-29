@@ -60,5 +60,4 @@ class GradleMetrics(
         logger.info(log)
         println(log)
     }
-
 }

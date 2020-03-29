@@ -4,6 +4,7 @@ import org.gradle.api.Project
 import ru.santaev.gradle_metrics_plugin.api.LongMetric
 import ru.santaev.gradle_metrics_plugin.api.MetricUnit
 import ru.santaev.gradle_metrics_plugin.api.collector.BaseMetricCollector
+import ru.santaev.gradle_metrics_plugin.utils.sizeOnKilobytes
 import java.io.File
 
 open class FileSizeMetricCollector(

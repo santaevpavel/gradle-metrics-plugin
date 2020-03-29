@@ -2,6 +2,7 @@ package ru.santaev.gradle_metrics_plugin.extension
 
 import ru.santaev.gradle_metrics_plugin.api.IExtensionsProvider
 import ru.santaev.gradle_metrics_plugin.utils.logger
+import java.io.Closeable
 import java.io.File
 import java.io.IOException
 import java.net.URL
@@ -9,9 +10,10 @@ import java.net.URLClassLoader
 import java.util.*
 
 
-class ExtensionsLoader {
+class ExtensionsLoader : Closeable {
 
     private val logger = logger(this)
+    private val classLoadersClosable = mutableListOf<Closeable>()
 
     fun load(jarFiles: List<File>): List<IExtensionsProvider> {
         return jarFiles
@@ -19,22 +21,29 @@ class ExtensionsLoader {
             .mapNotNull { loadExtensionProvider(it) }
     }
 
+    override fun close() {
+        classLoadersClosable.forEach { it.close() }
+    }
+
     private fun loadJar(file: File): Class<*>? {
         val urls = arrayOf(URL("jar:file:" + file.absolutePath + "!/"))
-        addJarToClasspath(file.toURI().toURL())
         val classLoader = URLClassLoader.newInstance(urls, this::class.java.classLoader)
-        val extensionPropertiesFile = classLoader.getResource(EXTENSION_PROPERTY_FILE_PATH)
-        if (extensionPropertiesFile == null) {
-            logger.error("Properties file not found in jar file (${file.name})")
-            return null
+        try {
+            val extensionPropertiesFile = classLoader.getResource(EXTENSION_PROPERTY_FILE_PATH)
+            if (extensionPropertiesFile == null) {
+                logger.error("Properties file not found in jar file (${file.name})")
+                return null
+            }
+            val extensionProperties = loadProperties(extensionPropertiesFile)
+            val extensionProviderName = extensionProperties.getProperty(EXTENSION_PROVIDER_PROPERTY_NAME)
+            if (extensionProviderName == null) {
+                logger.error("Not found extension provider class name property")
+                return null
+            }
+            return classLoader.loadClass(extensionProviderName)
+        } finally {
+            classLoadersClosable.add(classLoader)
         }
-        val extensionProperties = loadProperties(extensionPropertiesFile)
-        val extensionProviderName = extensionProperties.getProperty(EXTENSION_PROVIDER_PROPERTY_NAME)
-        if (extensionProviderName == null) {
-            logger.error("Not found extension provider class name property")
-            return null
-        }
-        return classLoader.loadClass(extensionProviderName)
     }
 
     private fun loadExtensionProvider(clazz: Class<*>): IExtensionsProvider? {
@@ -58,15 +67,7 @@ class ExtensionsLoader {
             fromUrl.openStream().use { stream ->
                 load(stream)
             }
-
         }
-    }
-
-    private fun addJarToClasspath(url: URL) {
-        val classLoader = ClassLoader.getSystemClassLoader() as URLClassLoader
-        val method = URLClassLoader::class.java.getDeclaredMethod("addURL", URL::class.java)
-        method.isAccessible = true
-        method.invoke(classLoader, url)
     }
 
     companion object {
