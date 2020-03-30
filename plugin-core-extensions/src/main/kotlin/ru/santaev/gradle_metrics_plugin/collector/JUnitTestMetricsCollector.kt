@@ -13,6 +13,7 @@ import java.io.File
 
 class JUnitTestMetricsCollector : BaseMetricCollector() {
 
+    override val id: String = METRIC_ID_TESTS_COUNT
     private val logger = logger(this)
     private var wasTestTaskExecuted = false
     private val projectsWithTests = mutableListOf<Project>()

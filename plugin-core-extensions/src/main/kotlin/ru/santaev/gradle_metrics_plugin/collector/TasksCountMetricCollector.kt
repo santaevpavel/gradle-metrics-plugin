@@ -12,6 +12,7 @@ import ru.santaev.gradle_metrics_plugin.utils.logger
 
 class TasksCountMetricCollector : BaseMetricCollector() {
 
+    override val id: String = TASKS_COUNT_METRIC_ID
     private val logger = logger(this)
     private var tasksCounter: TasksCountMetricCollectorListener? = null
 
@@ -81,7 +82,7 @@ class TasksCountMetricCollector : BaseMetricCollector() {
 
     companion object {
         private const val TASKS_COUNT_METRIC_ID = "TasksCount"
-        private const val SUCCESSFUL_TASKS_COUNT_METRIC_ID = "SuccesfulTasksCount"
+        private const val SUCCESSFUL_TASKS_COUNT_METRIC_ID = "SuccessfulTasksCount"
         private const val UP_TO_DATE_TASKS_COUNT_METRIC_ID = "UpToDateTasksCount"
         private const val FAILED_TASKS_COUNT_METRIC_ID = "FailedTasksCount"
     }

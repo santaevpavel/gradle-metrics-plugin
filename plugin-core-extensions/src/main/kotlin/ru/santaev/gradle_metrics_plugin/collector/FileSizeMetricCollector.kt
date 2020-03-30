@@ -13,6 +13,8 @@ open class FileSizeMetricCollector(
     private val isPublishWhenNoFile: Boolean
 ) : BaseMetricCollector() {
 
+    override val id: String = metricId
+
     override fun onBuildFinish() {
         val project = project ?: return
         val size = fileResolver.getFile(project)?.takeIf { it.exists() && it.isFile }?.sizeOnKilobytes

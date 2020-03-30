@@ -5,6 +5,8 @@ import ru.santaev.gradle_metrics_plugin.api.IMetricsStore
 
 interface IMetricsCollector {
 
+    val id: String
+
     fun init(metricsStore: IMetricsStore, project: Project)
 }
 
