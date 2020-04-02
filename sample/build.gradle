@@ -1,6 +1,5 @@
 buildscript {
     repositories {
-        /*flatDir dirs: "$rootDir/plugin/build/libs"*/
         maven {
             url = rootProject.localMavenPath
         }
@@ -40,11 +39,20 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-
 metrics {
     collectors {
-        id "BuildTime"
-        id "TasksCount"
-        id "TasksCount2"
+        BuildTime {
+            id = "bb"
+        }
+        TasksCount
+        TasksCount2
+        FileSize {
+            path = "build.gradle"
+            metricId = "GradleFileSize"
+        }
+        FileSize {
+            path = "build/reports/tests/test/index.html"
+            metricId = "ReportsFileSize"
+        }
     }
 }

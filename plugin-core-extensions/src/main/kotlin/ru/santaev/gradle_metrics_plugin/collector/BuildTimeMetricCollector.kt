@@ -5,6 +5,7 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.execution.TaskExecutionListener
 import org.gradle.api.tasks.TaskState
+import ru.santaev.gradle_metrics_plugin.api.Config
 import ru.santaev.gradle_metrics_plugin.api.DoubleMetric
 import ru.santaev.gradle_metrics_plugin.api.IMetricsStore
 import ru.santaev.gradle_metrics_plugin.api.MetricUnit
@@ -17,7 +18,7 @@ class BuildTimeMetricCollector: IMetricsCollector {
     override val id: String = BUILD_TIME_METRIC_ID
     private val logger = logger(this)
 
-    override fun init(metricsStore: IMetricsStore, project: Project) {
+    override fun init(config: Config, metricsStore: IMetricsStore, project: Project) {
         project.gradle.addBuildListener(
             BuildTimeCalculatorListener { buildTimeMillis ->
                 collectBuildTime(metricsStore, buildTimeMillis)

@@ -9,6 +9,7 @@ import ru.santaev.gradle_metrics_plugin.extension.MetricsProcessorsLoader
 @Suppress("UnstableApiUsage")
 class GradleMetricsPlugin : Plugin<Project> {
 
+    @Suppress("MoveLambdaOutsideParentheses")
     override fun apply(project: Project) {
         val extension = project.extensions.create(EXTENSION_NAME, GradleMetricsPluginExtension::class.java)
         val pluginClasspath = project.files()

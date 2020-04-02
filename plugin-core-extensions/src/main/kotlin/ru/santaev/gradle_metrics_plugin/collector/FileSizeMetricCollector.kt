@@ -7,13 +7,13 @@ import ru.santaev.gradle_metrics_plugin.api.collector.BaseMetricCollector
 import ru.santaev.gradle_metrics_plugin.utils.sizeOnKilobytes
 import java.io.File
 
-open class FileSizeMetricCollector(
-    private val metricId: String,
-    private val fileResolver: FileResolver,
+abstract class FileSizeMetricCollector(
     private val isPublishWhenNoFile: Boolean
 ) : BaseMetricCollector() {
 
-    override val id: String = metricId
+    override val id: String = "FileSize"
+    protected abstract val fileResolver: FileResolver
+    protected abstract val metricId: String
 
     override fun onBuildFinish() {
         val project = project ?: return
@@ -40,10 +40,12 @@ open class FileSizeMetricCollector(
 }
 
 class JarFileSizeMetricCollector : FileSizeMetricCollector(
-    metricId = "JarFileSize",
-    fileResolver = JarFileResolver(),
     isPublishWhenNoFile = false
 ) {
+
+    override val id: String = "JarFileSize"
+    override val metricId: String = "JarFileSize"
+    override val fileResolver: FileResolver = JarFileResolver()
 
     class JarFileResolver : FileResolver {
 
@@ -52,6 +54,23 @@ class JarFileSizeMetricCollector : FileSizeMetricCollector(
                 .takeIf { it.exists() && it.isDirectory }
                 ?.listFiles { _, name -> name.endsWith(".jar") }
                 ?.first()
+        }
+    }
+}
+
+class ConfigurableFileSizeMetricCollector : FileSizeMetricCollector(
+    isPublishWhenNoFile = false
+) {
+
+    override val id: String = "FileSize"
+    override val metricId: String by lazy { config?.properties?.get("metricId").orEmpty() }
+    override val fileResolver: FileResolver = ConfigFileResolver()
+
+    private inner class ConfigFileResolver: FileResolver {
+
+        override fun getFile(project: Project): File? {
+            val path = config?.properties?.get("path") ?: return null
+            return File(path).takeIf { it.exists() }
         }
     }
 }
