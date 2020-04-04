@@ -3,6 +3,7 @@ package ru.santaev.gradle_metrics_plugin.collector
 import org.gradle.api.Project
 import ru.santaev.gradle_metrics_plugin.api.LongMetric
 import ru.santaev.gradle_metrics_plugin.api.MetricUnit
+import ru.santaev.gradle_metrics_plugin.api.ProcessorId
 import ru.santaev.gradle_metrics_plugin.api.collector.BaseMetricCollector
 import ru.santaev.gradle_metrics_plugin.utils.sizeOnKilobytes
 import java.io.File
@@ -11,7 +12,6 @@ abstract class FileSizeMetricCollector(
     private val isPublishWhenNoFile: Boolean
 ) : BaseMetricCollector() {
 
-    override val id: String = "FileSize"
     protected abstract val fileResolver: FileResolver
     protected abstract val metricId: String
 
@@ -43,7 +43,6 @@ class JarFileSizeMetricCollector : FileSizeMetricCollector(
     isPublishWhenNoFile = false
 ) {
 
-    override val id: String = "JarFileSize"
     override val metricId: String = "JarFileSize"
     override val fileResolver: FileResolver = JarFileResolver()
 
@@ -58,11 +57,11 @@ class JarFileSizeMetricCollector : FileSizeMetricCollector(
     }
 }
 
+@ProcessorId("FileSize")
 class ConfigurableFileSizeMetricCollector : FileSizeMetricCollector(
     isPublishWhenNoFile = false
 ) {
 
-    override val id: String = "FileSize"
     override val metricId: String by lazy { config?.properties?.get("metricId").orEmpty() }
     override val fileResolver: FileResolver = ConfigFileResolver()
 

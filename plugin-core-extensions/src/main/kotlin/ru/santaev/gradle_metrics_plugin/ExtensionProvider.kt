@@ -9,17 +9,19 @@ import ru.santaev.gradle_metrics_plugin.dispatcher.ConsoleMetricsDispatcher
 @Suppress("unused")
 class ExtensionProvider: IExtensionsProvider {
 
-    override fun provideCollectors(): List<IMetricsCollector> {
+    override fun provideCollectors(): List<Class<out IMetricsCollector>> {
         return listOf(
-            JUnitTestMetricsCollector(),
-            BuildTimeMetricCollector(),
-            JarFileSizeMetricCollector(),
-            TasksCountMetricCollector(),
-            ConfigurableFileSizeMetricCollector()
+            JUnitTestMetricsCollector::class.java,
+            BuildTimeMetricCollector::class.java,
+            JarFileSizeMetricCollector::class.java,
+            TasksCountMetricCollector::class.java,
+            ConfigurableFileSizeMetricCollector::class.java
         )
     }
 
-    override fun provideDispatcher(): List<IMetricsDispatcher> {
-        return listOf(ConsoleMetricsDispatcher())
+    override fun provideDispatcher(): List<Class<out IMetricsDispatcher>> {
+        return listOf(
+            ConsoleMetricsDispatcher::class.java
+        )
     }
 }

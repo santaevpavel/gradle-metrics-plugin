@@ -15,7 +15,6 @@ import ru.santaev.gradle_metrics_plugin.utils.logger
 
 class BuildTimeMetricCollector: IMetricsCollector {
 
-    override val id: String = BUILD_TIME_METRIC_ID
     private val logger = logger(this)
 
     override fun init(config: Config, metricsStore: IMetricsStore, project: Project) {

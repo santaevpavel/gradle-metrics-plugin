@@ -13,7 +13,6 @@ import ru.santaev.gradle_metrics_plugin.utils.logger
 
 class TasksCountMetricCollector : BaseMetricCollector() {
 
-    override val id: String = TASKS_COUNT_METRIC_ID
     private val logger = logger(this)
     private var tasksCounter: TasksCountMetricCollectorListener? = null
 

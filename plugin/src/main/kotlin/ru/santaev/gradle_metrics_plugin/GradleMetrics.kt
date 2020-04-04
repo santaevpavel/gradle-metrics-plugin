@@ -6,6 +6,7 @@ import org.gradle.api.tasks.Classpath
 import ru.santaev.gradle_metrics_plugin.api.Config
 import ru.santaev.gradle_metrics_plugin.api.collector.IMetricsCollector
 import ru.santaev.gradle_metrics_plugin.extension.IMetricsProcessorsLoader
+import ru.santaev.gradle_metrics_plugin.extension.MetricCollectorLoadInfo
 import ru.santaev.gradle_metrics_plugin.extension.MetricProcessors
 import ru.santaev.gradle_metrics_plugin.utils.logger
 import ru.santaev.gradle_metrics_plugin.utils.whenBuildFinished
@@ -26,7 +27,6 @@ class GradleMetrics(
         project.whenEvaluated { initMetricProcessors() }
     }
 
-
     private fun initMetricProcessors() {
         logger.info("Loading metrics processors")
         loadProcessors()
@@ -36,25 +36,28 @@ class GradleMetrics(
 
 
     private fun loadProcessors() {
-        val loadedProcessors = metricsProcessorsLoader.load(pluginClasspath.toCollection(mutableListOf()))
-        val collectorsToConfig = loadCollectors(loadedProcessors.collectors)
+        val metricProcessorsLoadInfo = metricsProcessorsLoader.load(pluginClasspath.toCollection(mutableListOf()))
+        val collectorsWithConfig = loadCollectors(metricProcessorsLoadInfo.collectors)
         processors = MetricProcessors(
-            collectors = collectorsToConfig.map { it.first },
-            dispatchers = loadedProcessors.dispatchers
+            collectors = collectorsWithConfig.map { it.first },
+            dispatchers = metricProcessorsLoadInfo.dispatchers.values.toList().map { it.instantiator.instantiate() }
         )
-        initCollectors(collectorsToConfig)
-        logNotExistingCollectors(loadedProcessors.collectors)
+        initCollectors(collectorsWithConfig)
+        logNotExistingCollectors(metricProcessorsLoadInfo.collectors)
     }
 
-    private fun loadCollectors(collectors: List<IMetricsCollector>): List<Pair<IMetricsCollector, Config>> {
-        val idToCollectors = collectors
-            .map { it.id.toLowerCase() to it }
-            .toMap()
-
+    private fun loadCollectors(
+        collectors: Map<String, MetricCollectorLoadInfo>
+    ): List<Pair<IMetricsCollector, Config>> {
+        val idToCollectors = collectors.mapKeys { it.key.toLowerCase() }
         return extension.collectors
-            .map { collector -> idToCollectors[collector.id.toLowerCase()] to collector.properties}
+            .map { collector ->
+                idToCollectors[collector.id.toLowerCase()] to collector.properties
+            }
             .filter { (collector, _) -> collector != null }
-            .map { (collector, properties) -> collector as IMetricsCollector to Config(properties ?: emptyMap()) }
+            .map { (collector, properties) ->
+                (collector as MetricCollectorLoadInfo).instantiator.instantiate() to Config(properties ?: emptyMap())
+            }
     }
 
     private fun initCollectors(collectorsToConfig: List<Pair<IMetricsCollector, Config>>) {
@@ -87,12 +90,12 @@ class GradleMetrics(
         println(log)
     }
 
-    private fun logNotExistingCollectors(allCollectors: List<IMetricsCollector>) {
-        val ids = allCollectors.map { it.id }
+    private fun logNotExistingCollectors(collectors: Map<String, MetricCollectorLoadInfo>) {
+        val ids = collectors.asSequence().map { it.key.toLowerCase() }.toList()
         var isAnyNonExistingCollector = false
         extension.collectors.forEach { collector ->
             if (ids.none { it.equals(collector.id, ignoreCase = true) }) {
-                logger.error("Unknown collector with id = \"${collector.id}.\"")
+                logger.error("Unknown collector with id = \"${collector.id}\".")
                 isAnyNonExistingCollector = true
             }
         }
