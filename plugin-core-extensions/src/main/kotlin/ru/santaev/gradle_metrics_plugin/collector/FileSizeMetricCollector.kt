@@ -2,8 +2,8 @@ package ru.santaev.gradle_metrics_plugin.collector
 
 import org.gradle.api.Project
 import ru.santaev.gradle_metrics_plugin.api.LongMetric
+import ru.santaev.gradle_metrics_plugin.api.MetricProcessorId
 import ru.santaev.gradle_metrics_plugin.api.MetricUnit
-import ru.santaev.gradle_metrics_plugin.api.ProcessorId
 import ru.santaev.gradle_metrics_plugin.api.collector.BaseMetricCollector
 import ru.santaev.gradle_metrics_plugin.utils.sizeOnKilobytes
 import java.io.File
@@ -57,7 +57,7 @@ class JarFileSizeMetricCollector : FileSizeMetricCollector(
     }
 }
 
-@ProcessorId("FileSize")
+@MetricProcessorId("FileSize")
 class ConfigurableFileSizeMetricCollector : FileSizeMetricCollector(
     isPublishWhenNoFile = false
 ) {

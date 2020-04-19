@@ -1,6 +1,6 @@
 package ru.santaev.gradle_metrics_plugin.extension
 
-import ru.santaev.gradle_metrics_plugin.api.ProcessorId
+import ru.santaev.gradle_metrics_plugin.api.MetricProcessorId
 import ru.santaev.gradle_metrics_plugin.api.collector.IMetricsCollector
 import ru.santaev.gradle_metrics_plugin.api.dispatcher.IMetricsDispatcher
 import ru.santaev.gradle_metrics_plugin.utils.logger
@@ -32,12 +32,12 @@ class MetricsProcessorsLoader(
         return collectorClasses
             .map { collectorClass ->
                 val annotation = collectorClass.annotations.firstOrNull { a ->
-                    (a.annotationClass.java == ProcessorId::class.java)
+                    (a.annotationClass.java == MetricProcessorId::class.java)
                 }
                 if (annotation != null) {
-                    (annotation as ProcessorId).id to collectorClass
+                    (annotation as MetricProcessorId).id to collectorClass
                 } else {
-                    logger.warn("Collector ${collectorClass.name} doesn't have annotation `ProcessorId`")
+                    logger.warn("Collector ${collectorClass.name} doesn't have annotation `MetricProcessorId`")
                     null to collectorClass
                 }
             }
@@ -54,12 +54,12 @@ class MetricsProcessorsLoader(
         return dispatcherClasses
             .map { dispatcherClass ->
                 val annotation = dispatcherClass.annotations.firstOrNull { a ->
-                    (a.annotationClass.java == ProcessorId::class.java)
+                    (a.annotationClass.java == MetricProcessorId::class.java)
                 }
                 if (annotation != null) {
-                    (annotation as ProcessorId).id to dispatcherClass
+                    (annotation as MetricProcessorId).id to dispatcherClass
                 } else {
-                    logger.warn("Dispatcher ${dispatcherClass.name} doesn't have annotation `ProcessorId`")
+                    logger.warn("Dispatcher ${dispatcherClass.name} doesn't have annotation `MetricProcessorId`")
                     null to dispatcherClass
                 }
             }

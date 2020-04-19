@@ -15,7 +15,7 @@ import org.mockito.junit.MockitoJUnitRunner
 import ru.santaev.gradle_metrics_plugin.api.Config
 import ru.santaev.gradle_metrics_plugin.api.IExtensionsProvider
 import ru.santaev.gradle_metrics_plugin.api.IMetricsStore
-import ru.santaev.gradle_metrics_plugin.api.ProcessorId
+import ru.santaev.gradle_metrics_plugin.api.MetricProcessorId
 import ru.santaev.gradle_metrics_plugin.api.collector.IMetricsCollector
 
 
@@ -74,19 +74,19 @@ class MetricsProcessorsLoaderTest {
         return MetricsProcessorsLoader(extensionsLoader)
     }
 
-    @ProcessorId("Metric1")
+    @MetricProcessorId("Metric1")
     private class MetricCollector1: IMetricsCollector {
         override fun init(config: Config, metricsStore: IMetricsStore, project: Project) {
         }
     }
 
-    @ProcessorId("Metric2")
+    @MetricProcessorId("Metric2")
     private class MetricCollector2: IMetricsCollector {
         override fun init(config: Config, metricsStore: IMetricsStore, project: Project) {
         }
     }
 
-    @ProcessorId("Metric3")
+    @MetricProcessorId("Metric3")
     private class MetricCollector3: IMetricsCollector {
         override fun init(config: Config, metricsStore: IMetricsStore, project: Project) {
         }
