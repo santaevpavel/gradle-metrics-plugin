@@ -7,19 +7,19 @@ import ru.santaev.gradle_metrics_plugin.utils.logger
 import java.io.Closeable
 import java.io.File
 
-interface IMetricsProcessorsLoader : Closeable {
+interface IMetricProcessorsLoader : Closeable {
 
     fun load(jarFiles: List<File>): MetricProcessorsLoadInfo
 }
 
-class MetricsProcessorsLoader(
-    private val extensionsLoader: ExtensionsLoader = ExtensionsLoader()
-) : IMetricsProcessorsLoader, Closeable by extensionsLoader {
+class MetricProcessorsLoader(
+    private val extensionsProviderJarLoader: ExtensionsProviderJarLoader = ExtensionsProviderJarLoader()
+) : IMetricProcessorsLoader, Closeable by extensionsProviderJarLoader {
 
     private val logger = logger(this)
 
     override fun load(jarFiles: List<File>): MetricProcessorsLoadInfo {
-        val extensionProviders = extensionsLoader.load(jarFiles)
+        val extensionProviders = extensionsProviderJarLoader.load(jarFiles)
         return MetricProcessorsLoadInfo(
             collectors = getCollectorsLoadInfo(extensionProviders.flatMap { it.provideCollectors() }),
             dispatchers = getDispatchersLoadInfo(extensionProviders.flatMap { it.provideDispatcher() })
@@ -30,20 +30,17 @@ class MetricsProcessorsLoader(
         collectorClasses: List<Class<out IMetricsCollector>>
     ): Map<String, MetricCollectorLoadInfo> {
         return collectorClasses
-            .map { collectorClass ->
-                val annotation = collectorClass.annotations.firstOrNull { a ->
-                    (a.annotationClass.java == MetricProcessorId::class.java)
-                }
+            .mapNotNull { collectorClass ->
+                val annotation = collectorClass.findMetricProcessorAnnotation()
                 if (annotation != null) {
-                    (annotation as MetricProcessorId).id to collectorClass
+                    annotation.id to collectorClass
                 } else {
                     logger.warn("Collector ${collectorClass.name} doesn't have annotation `MetricProcessorId`")
-                    null to collectorClass
+                    null
                 }
             }
-            .filter { (id, _) -> id != null }
             .map { (id, clazz) ->
-                id!! to MetricCollectorLoadInfo(id, InstantiatorImpl(clazz))
+                id to MetricCollectorLoadInfo(id, InstantiatorImpl(clazz))
             }
             .toMap()
     }
@@ -52,21 +49,22 @@ class MetricsProcessorsLoader(
         dispatcherClasses: List<Class<out IMetricsDispatcher>>
     ): Map<String, MetricDispatcherLoadInfo> {
         return dispatcherClasses
-            .map { dispatcherClass ->
-                val annotation = dispatcherClass.annotations.firstOrNull { a ->
-                    (a.annotationClass.java == MetricProcessorId::class.java)
-                }
+            .mapNotNull { dispatcherClass ->
+                val annotation = dispatcherClass.findMetricProcessorAnnotation()
                 if (annotation != null) {
-                    (annotation as MetricProcessorId).id to dispatcherClass
+                    annotation.id to dispatcherClass
                 } else {
                     logger.warn("Dispatcher ${dispatcherClass.name} doesn't have annotation `MetricProcessorId`")
-                    null to dispatcherClass
+                    null
                 }
             }
-            .filter { (id, _) -> id != null }
             .map { (id, clazz) ->
-                id!! to MetricDispatcherLoadInfo(id, InstantiatorImpl(clazz))
+                id to MetricDispatcherLoadInfo(id, InstantiatorImpl(clazz))
             }
             .toMap()
+    }
+
+    private fun Class<*>.findMetricProcessorAnnotation(): MetricProcessorId? {
+        return annotations.firstOrNull { it.annotationClass.java == MetricProcessorId::class.java} as MetricProcessorId?
     }
 }

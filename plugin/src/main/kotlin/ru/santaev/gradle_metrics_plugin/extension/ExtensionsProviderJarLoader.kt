@@ -10,7 +10,7 @@ import java.net.URLClassLoader
 import java.util.*
 
 
-class ExtensionsLoader : Closeable {
+class ExtensionsProviderJarLoader : Closeable {
 
     private val logger = logger(this)
     private val classLoadersClosable = mutableListOf<Closeable>()

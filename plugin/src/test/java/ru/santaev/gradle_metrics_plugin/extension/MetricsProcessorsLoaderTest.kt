@@ -12,20 +12,18 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-import ru.santaev.gradle_metrics_plugin.api.Config
-import ru.santaev.gradle_metrics_plugin.api.IExtensionsProvider
-import ru.santaev.gradle_metrics_plugin.api.IMetricsStore
-import ru.santaev.gradle_metrics_plugin.api.MetricProcessorId
+import ru.santaev.gradle_metrics_plugin.api.*
 import ru.santaev.gradle_metrics_plugin.api.collector.IMetricsCollector
+import ru.santaev.gradle_metrics_plugin.api.dispatcher.IMetricsDispatcher
 
 
 @RunWith(MockitoJUnitRunner::class)
 class MetricsProcessorsLoaderTest {
 
     @Mock
-    private lateinit var processorsLoader: MetricsProcessorsLoader
+    private lateinit var processorsLoader: MetricProcessorsLoader
     @Mock
-    private lateinit var extensionsLoader: ExtensionsLoader
+    private lateinit var extensionsProviderJarLoader: ExtensionsProviderJarLoader
 
     @Before
     fun setup() {
@@ -33,9 +31,9 @@ class MetricsProcessorsLoaderTest {
     }
 
     @Test
-    fun `should collect all collectors from extension providers if all collectors has annotations`() {
+    fun `should load all collectors from extension providers if all collectors has annotations`() {
         // Arrange
-        extensionsLoader.stub {
+        extensionsProviderJarLoader.stub {
             on { load(any()) } doReturn EXTENSION_LOADERS
         }
         processorsLoader = createMetricsProcessorsLoader()
@@ -49,7 +47,7 @@ class MetricsProcessorsLoaderTest {
     }
 
     @Test
-    fun `should collect annotated collectors from extension providers`() {
+    fun `should load annotated collectors from extension providers`() {
         // Arrange
         val extensionProvider = mock<IExtensionsProvider> {
             on { provideCollectors() } doReturn listOf(
@@ -58,7 +56,7 @@ class MetricsProcessorsLoaderTest {
                 MetricCollector2::class.java
             )
         }
-        extensionsLoader.stub {
+        extensionsProviderJarLoader.stub {
             on { load(any()) } doReturn listOf(extensionProvider)
         }
         processorsLoader = createMetricsProcessorsLoader()
@@ -70,8 +68,28 @@ class MetricsProcessorsLoaderTest {
         loadedCollectors.size `should be` 2
     }
 
-    private fun createMetricsProcessorsLoader(): MetricsProcessorsLoader {
-        return MetricsProcessorsLoader(extensionsLoader)
+    @Test
+    fun `should load annotated dispatchers from extension providers`() {
+        // Arrange
+        val extensionProvider = mock<IExtensionsProvider> {
+            on { provideDispatcher() } doReturn listOf(
+                MetricDispatcherWithoutAnnotation::class.java,
+                MetricDispatcher1::class.java
+            )
+        }
+        extensionsProviderJarLoader.stub {
+            on { load(any()) } doReturn listOf(extensionProvider)
+        }
+        processorsLoader = createMetricsProcessorsLoader()
+        // Act
+        val loadedDispatchers = processorsLoader.load(emptyList()).dispatchers
+        // Assert
+        loadedDispatchers["Dispatcher1"]?.instantiator?.instantiate() `should be instance of` MetricDispatcher1::class.java
+        loadedDispatchers.size `should be` 1
+    }
+
+    private fun createMetricsProcessorsLoader(): MetricProcessorsLoader {
+        return MetricProcessorsLoader(extensionsProviderJarLoader)
     }
 
     @MetricProcessorId("Metric1")
@@ -97,9 +115,27 @@ class MetricsProcessorsLoaderTest {
         }
     }
 
+    @MetricProcessorId("Dispatcher1")
+    private class MetricDispatcher1: IMetricsDispatcher {
+        override fun init(config: Config, project: Project) {
+        }
+
+        override fun dispatch(metrics: List<Metric>) {
+        }
+    }
+
+    private class MetricDispatcherWithoutAnnotation: IMetricsDispatcher {
+        override fun init(config: Config, project: Project) {
+        }
+
+        override fun dispatch(metrics: List<Metric>) {
+        }
+    }
+
     companion object {
         private val EXTENSION_PROVIDER_1 = mock<IExtensionsProvider> {
             on { provideCollectors() } doReturn listOf(MetricCollector1::class.java)
+            on { provideDispatcher() } doReturn listOf(MetricDispatcher1::class.java)
         }
         private val EXTENSION_PROVIDER_2 = mock<IExtensionsProvider> {
             on { provideCollectors() } doReturn listOf(MetricCollector2::class.java, MetricCollector3::class.java)

@@ -3,7 +3,8 @@ package ru.santaev.gradle_metrics_plugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.ConfigurableFileCollection
-import ru.santaev.gradle_metrics_plugin.extension.MetricsProcessorsLoader
+import ru.santaev.gradle_metrics_plugin.extension.MetricProcessorConfigurator
+import ru.santaev.gradle_metrics_plugin.extension.MetricProcessorsLoader
 
 
 @Suppress("UnstableApiUsage")
@@ -14,7 +15,7 @@ class GradleMetricsPlugin : Plugin<Project> {
         val extension = project.extensions.create(EXTENSION_NAME, GradleMetricsPluginExtension::class.java)
         val pluginClasspath = project.files()
         createConfiguration(project, pluginClasspath)
-        GradleMetrics(project, extension, pluginClasspath, MetricsProcessorsLoader())
+        GradleMetrics(project, extension, pluginClasspath, MetricProcessorsLoader(), MetricProcessorConfigurator())
     }
 
     private fun createConfiguration(
