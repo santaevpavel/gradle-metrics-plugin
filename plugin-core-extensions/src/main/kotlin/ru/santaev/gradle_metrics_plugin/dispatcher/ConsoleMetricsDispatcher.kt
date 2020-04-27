@@ -6,7 +6,7 @@ import ru.santaev.gradle_metrics_plugin.api.Metric
 import ru.santaev.gradle_metrics_plugin.api.MetricProcessorId
 import ru.santaev.gradle_metrics_plugin.api.dispatcher.IMetricsDispatcher
 
-@MetricProcessorId("Console")
+@MetricProcessorId("ConsoleDispatcher")
 class ConsoleMetricsDispatcher : IMetricsDispatcher {
 
     override fun init(config: Config, project: Project) {

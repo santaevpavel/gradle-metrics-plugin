@@ -54,5 +54,11 @@ metrics {
             path = "build/reports/tests/test/index.html"
             metricId = "ReportsFileSize"
         }
+        BuildTime
+        TaskNames
+        TasksCount
+    }
+    dispatchers {
+        ConsoleDispatcher
     }
 }

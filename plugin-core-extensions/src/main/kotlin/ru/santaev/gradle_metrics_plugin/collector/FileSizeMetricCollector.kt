@@ -15,7 +15,13 @@ abstract class FileSizeMetricCollector(
     protected abstract val fileResolver: FileResolver
     protected abstract val metricId: String
 
-    override fun onBuildFinish() {
+    init {
+        afterBuild {
+            collectMetric()
+        }
+    }
+
+    private fun collectMetric() {
         val project = project ?: return
         val size = fileResolver.getFile(project)?.takeIf { it.exists() && it.isFile }?.sizeOnKilobytes
 

@@ -23,7 +23,7 @@ class MetricProcessorsLoader(
         return MetricProcessorsLoadInfo(
             collectors = getCollectorsLoadInfo(extensionProviders.flatMap { it.provideCollectors() }),
             dispatchers = getDispatchersLoadInfo(extensionProviders.flatMap { it.provideDispatcher() })
-        )
+        ).also { logProcessors(it) }
     }
 
     private fun getCollectorsLoadInfo(
@@ -66,5 +66,16 @@ class MetricProcessorsLoader(
 
     private fun Class<*>.findMetricProcessorAnnotation(): MetricProcessorId? {
         return annotations.firstOrNull { it.annotationClass.java == MetricProcessorId::class.java} as MetricProcessorId?
+    }
+
+    private fun logProcessors(processors: MetricProcessorsLoadInfo) {
+        logger.info("Loaded processors:")
+        processors.collectors.keys.forEach { collector ->
+            logger.info("\t- $collector")
+        }
+        logger.info("Loaded dispatchers:")
+        processors.dispatchers.keys.forEach { dispatcher ->
+            logger.info("\t- $dispatcher")
+        }
     }
 }

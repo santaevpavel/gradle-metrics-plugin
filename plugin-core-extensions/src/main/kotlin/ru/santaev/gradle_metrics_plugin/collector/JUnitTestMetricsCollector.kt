@@ -4,31 +4,31 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.execution.TaskExecutionAdapter
 import org.gradle.api.tasks.TaskState
-import ru.santaev.gradle_metrics_plugin.api.Config
-import ru.santaev.gradle_metrics_plugin.api.IMetricsStore
 import ru.santaev.gradle_metrics_plugin.api.LongMetric
+import ru.santaev.gradle_metrics_plugin.api.MetricProcessorId
 import ru.santaev.gradle_metrics_plugin.api.MetricUnit
 import ru.santaev.gradle_metrics_plugin.api.collector.BaseMetricCollector
 import ru.santaev.gradle_metrics_plugin.utils.logger
 import java.io.File
 
+@MetricProcessorId("JUnitTests")
 class JUnitTestMetricsCollector : BaseMetricCollector() {
 
     private val logger = logger(this)
     private var wasTestTaskExecuted = false
     private val projectsWithTests = mutableListOf<Project>()
 
-    override fun init(config: Config, metricsStore: IMetricsStore, project: Project) {
-        super.init(config, metricsStore, project)
-        project.gradle.addListener(TestsBuildTaskListener())
-    }
-
-    override fun onBuildFinish() {
-        if (!wasTestTaskExecuted) {
-            logger.info("Test task had not been executed")
-            return
+    init {
+        afterInit {
+            project.gradle.addListener(TestsBuildTaskListener())
         }
-        collectMetrics()
+        afterBuild {
+            if (!wasTestTaskExecuted) {
+                logger.info("Test task had not been executed")
+                return@afterBuild
+            }
+            collectMetrics()
+        }
     }
 
     private fun collectMetrics() {
