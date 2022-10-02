@@ -39,6 +39,14 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
+task DelayTask {
+    doFirst {
+        Thread.sleep(5000)
+    }
+}
+
+jar.dependsOn(DelayTask)
+
 metrics {
     collectors {
         BuildTime {
