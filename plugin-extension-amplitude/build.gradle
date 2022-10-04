@@ -1,0 +1,49 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm'
+    id 'com.github.johnrengelman.shadow'
+    id 'maven-publish'
+}
+
+group 'ru.santaev.gradle-metrics-plugin'
+version '0.1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    shadow "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    shadow project(path: ':plugin-api')
+    shadow gradleApi()
+    shadow localGroovy()
+    implementation "org.json:json:20201115"
+    implementation "com.amplitude:java-sdk:1.10.1"
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+shadowJar {
+    getArchiveClassifier().set(null)
+}
+
+publishing {
+    repositories {
+        maven {
+            url = rootProject.localMavenPath
+        }
+    }
+    publications {
+        maven(MavenPublication) { publication ->
+            artifact tasks.getByName("shadowJar")
+            groupId 'ru.santaev.gradle-metrics-plugin'
+            artifactId 'amplitude-extension'
+            version '0.1.0'
+        }
+    }
+}

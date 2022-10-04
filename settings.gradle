@@ -2,5 +2,7 @@ rootProject.name = 'gradle-metrics-plugin'
 include 'plugin'
 include 'plugin-api'
 include 'plugin-core-extensions'
-include 'sample'
-
+include 'plugin-extension-amplitude'
+if (properties["excludeSample"] != "true") {
+    include 'sample'
+}

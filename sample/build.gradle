@@ -29,6 +29,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     testImplementation "junit:junit:4.12"
     gradleMetricsPluginExtension "ru.santaev.gradle-metrics-plugin:core-extension:0.1.0"
+    gradleMetricsPluginExtension "ru.santaev.gradle-metrics-plugin:amplitude-extension:0.1.0"
 }
 
 compileKotlin {
@@ -41,7 +42,7 @@ compileTestKotlin {
 
 task DelayTask {
     doFirst {
-        Thread.sleep(5000)
+        Thread.sleep(500)
     }
 }
 
@@ -68,5 +69,8 @@ metrics {
     }
     dispatchers {
         ConsoleDispatcher
+        AmplitudeDispatcher {
+            apiKey = "2bdf01688c5ce7c59e820c426b5d5a3f"
+        }
     }
 }

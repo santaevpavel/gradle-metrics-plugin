@@ -87,6 +87,7 @@ class MetricProcessorConfigurator : IMetricProcessorsConfigurator {
         project: Project
     ) {
         dispatchersToConfig.forEach { (dispatcher, config) ->
+            logger.info("Initializing ${dispatcher::class.java.simpleName}. Config = $config")
             dispatcher.init(config, project)
         }
     }
