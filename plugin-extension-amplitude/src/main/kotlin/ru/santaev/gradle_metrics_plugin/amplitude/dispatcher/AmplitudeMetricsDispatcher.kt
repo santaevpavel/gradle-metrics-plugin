@@ -24,16 +24,8 @@ class AmplitudeMetricsDispatcher : BaseMetricDispatcher() {
 
     override fun init(config: Config, project: Project) {
         super.init(config, project)
-        amplitude = Amplitude.getInstance()
-        amplitude.init(apiKey)
-        amplitude.setLogMode(AmplitudeLog.LogMode.DEBUG)
-        logger.info("ApiKey: $apiKey")
-
-        amplitude.setLogger(object : AmplitudeLog() {
-            override fun log(tag: String, message: String, messageMode: LogMode) {
-                logger.error("$tag $message")
-            }
-        })
+        initAmplitude()
+        setupLogger()
     }
 
     override fun dispatch(metrics: List<Metric>) {
@@ -50,6 +42,21 @@ class AmplitudeMetricsDispatcher : BaseMetricDispatcher() {
             properties.put(metric.id, metric.value)
         }
         return properties
+    }
+
+    private fun initAmplitude() {
+        amplitude = Amplitude.getInstance()
+        amplitude.init(apiKey)
+        amplitude.setLogMode(AmplitudeLog.LogMode.DEBUG)
+        logger.info("ApiKey: $apiKey")
+    }
+
+    private fun setupLogger() {
+        amplitude.setLogger(object : AmplitudeLog() {
+            override fun log(tag: String, message: String, messageMode: LogMode) {
+                logger.error("$tag $message")
+            }
+        })
     }
 
     companion object {
