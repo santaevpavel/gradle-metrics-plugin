@@ -41,3 +41,11 @@ fun DoubleMetric(
 ) : Metric {
     return Metric(id, value, unit)
 }
+
+fun StringMetric(
+    id: String,
+    value: String,
+    unit: MetricUnit
+) : Metric {
+    return Metric(id, value, unit)
+}

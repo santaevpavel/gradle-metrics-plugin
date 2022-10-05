@@ -42,7 +42,7 @@ compileTestKotlin {
 
 task DelayTask {
     doFirst {
-        Thread.sleep(500)
+        Thread.sleep(5000)
     }
 }
 
@@ -63,9 +63,9 @@ metrics {
             path = "build/reports/tests/test/index.html"
             metricId = "ReportsFileSize"
         }
-        BuildTime
         TaskNames
         TasksCount
+        ProjectProperties
     }
     dispatchers {
         ConsoleDispatcher
