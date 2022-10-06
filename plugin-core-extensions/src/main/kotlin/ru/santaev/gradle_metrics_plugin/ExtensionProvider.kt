@@ -12,7 +12,7 @@ class ExtensionProvider: IExtensionsProvider {
     override fun provideCollectors(): List<Class<out IMetricsCollector>> {
         return listOf(
             JUnitTestMetricsCollector::class.java,
-            BuildTimeMetricCollector::class.java,
+            BuildMetricCollector::class.java,
             JarFileSizeMetricCollector::class.java,
             TasksCountMetricCollector::class.java,
             ConfigurableFileSizeMetricCollector::class.java,

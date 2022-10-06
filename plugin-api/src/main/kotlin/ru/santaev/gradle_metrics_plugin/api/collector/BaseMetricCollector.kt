@@ -12,7 +12,7 @@ abstract class BaseMetricCollector : IMetricsCollector {
     protected var metricsStore: IMetricsStore? = null
     protected var project: Project? = null
     protected var config: Config? = null
-    private val buildFinishListeners = mutableListOf<Environment.() -> Unit>()
+    private val buildFinishListeners = mutableListOf<Environment.(BuildResult) -> Unit>()
     private val initListeners = mutableListOf<Environment.() -> Unit>()
 
     override fun init(config: Config, metricsStore: IMetricsStore, project: Project) {
@@ -24,14 +24,14 @@ abstract class BaseMetricCollector : IMetricsCollector {
         project.gradle.addBuildListener(
             object : BuildListenerAdapter() {
                 override fun buildFinished(result: BuildResult) {
-                    buildFinishListeners.forEach { it.invoke(environment) }
+                    buildFinishListeners.forEach { it.invoke(environment, result) }
                     onBuildFinish()
                 }
             }
         )
     }
 
-    fun addBuildFinishedListener(listener: Environment.() -> Unit) {
+    fun addBuildFinishedListener(listener: Environment.(BuildResult) -> Unit) {
         buildFinishListeners.add(listener)
     }
 
@@ -39,7 +39,7 @@ abstract class BaseMetricCollector : IMetricsCollector {
         initListeners.add(listener)
     }
 
-    fun afterBuild(block: Environment.() -> Unit) {
+    fun afterBuild(block: Environment.(BuildResult) -> Unit) {
         addBuildFinishedListener(block)
     }
 

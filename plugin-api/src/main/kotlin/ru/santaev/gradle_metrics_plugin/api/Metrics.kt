@@ -49,3 +49,11 @@ fun StringMetric(
 ) : Metric {
     return Metric(id, value, unit)
 }
+
+fun BooleanMetric(
+    id: String,
+    value: Boolean,
+    unit: MetricUnit
+) : Metric {
+    return Metric(id, value, unit)
+}
