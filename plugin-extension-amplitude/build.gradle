@@ -37,6 +37,14 @@ publishing {
         maven {
             url = rootProject.localMavenPath
         }
+        maven {
+            name = "Github"
+            url = "https://maven.pkg.github.com/santaevpavel/gradle-metrics-plugin"
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
     }
     publications {
         maven(MavenPublication) { publication ->

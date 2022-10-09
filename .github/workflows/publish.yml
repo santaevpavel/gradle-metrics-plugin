@@ -1,0 +1,56 @@
+name: Publish package to the Github Repository
+on:
+  workflow_dispatch:
+
+jobs:
+  publish-plugin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+      - name: Publish package
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: plugin:publishMavenPublicationToGithubRepository
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  publish-core-extensions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+      - name: Publish package
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: plugin-core-extensions:publishMavenPublicationToGithubRepository
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  publish-extensions-amplitude:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+      - name: Publish package
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: plugin-extension-amplitude:publishMavenPublicationToGithubRepository
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
