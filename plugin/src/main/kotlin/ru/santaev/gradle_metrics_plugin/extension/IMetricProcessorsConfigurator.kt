@@ -1,6 +1,7 @@
 package ru.santaev.gradle_metrics_plugin.extension
 
 import org.gradle.api.Project
+import org.gradle.api.logging.Logger
 import ru.santaev.gradle_metrics_plugin.GradleMetricsPluginExtension
 import ru.santaev.gradle_metrics_plugin.MetricsStore
 import ru.santaev.gradle_metrics_plugin.api.Config
@@ -20,7 +21,7 @@ interface IMetricProcessorsConfigurator {
 
 class MetricProcessorConfigurator : IMetricProcessorsConfigurator {
 
-    private val logger = logger(this)
+    private lateinit var logger: Logger
 
     override fun configure(
         metricProcessorsLoadInfo: MetricProcessorsLoadInfo,
@@ -28,6 +29,7 @@ class MetricProcessorConfigurator : IMetricProcessorsConfigurator {
         metricsStore: MetricsStore,
         project: Project
     ): MetricProcessors {
+        logger = project.logger
         val collectorsWithConfig = loadCollectors(metricProcessorsLoadInfo.collectors, configuration)
         val dispatchersWithConfig = loadDispatchers(metricProcessorsLoadInfo.dispatchers, configuration)
 
@@ -78,6 +80,7 @@ class MetricProcessorConfigurator : IMetricProcessorsConfigurator {
         project: Project
     ) {
         collectorsToConfig.forEach { (collector, config) ->
+            logger.info("Initializing ${collector::class.java.simpleName}. Config = $config")
             collector.init(config, metricsStore, project)
         }
     }
@@ -104,7 +107,6 @@ class MetricProcessorConfigurator : IMetricProcessorsConfigurator {
             }
         }
         logger.info(log)
-        println(log)
     }
 
     private fun logNotExistingCollectors(

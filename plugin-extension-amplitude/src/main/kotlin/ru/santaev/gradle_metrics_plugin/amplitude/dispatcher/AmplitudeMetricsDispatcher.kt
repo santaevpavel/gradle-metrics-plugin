@@ -54,7 +54,7 @@ class AmplitudeMetricsDispatcher : BaseMetricDispatcher() {
     private fun setupLogger() {
         amplitude.setLogger(object : AmplitudeLog() {
             override fun log(tag: String, message: String, messageMode: LogMode) {
-                logger.error("$tag $message")
+                logger.info("$tag $message")
             }
         })
     }

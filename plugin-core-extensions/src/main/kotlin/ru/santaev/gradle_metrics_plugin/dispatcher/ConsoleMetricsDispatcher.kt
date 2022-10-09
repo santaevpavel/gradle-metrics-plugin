@@ -1,15 +1,20 @@
 package ru.santaev.gradle_metrics_plugin.dispatcher
 
 import org.gradle.api.Project
+import org.gradle.api.logging.Logger
 import ru.santaev.gradle_metrics_plugin.api.Config
 import ru.santaev.gradle_metrics_plugin.api.Metric
 import ru.santaev.gradle_metrics_plugin.api.MetricProcessorId
 import ru.santaev.gradle_metrics_plugin.api.dispatcher.IMetricsDispatcher
+import ru.santaev.gradle_metrics_plugin.utils.logger
 
 @MetricProcessorId("ConsoleDispatcher")
 class ConsoleMetricsDispatcher : IMetricsDispatcher {
 
+    private lateinit var logger: Logger
+
     override fun init(config: Config, project: Project) {
+        logger = project.logger
     }
 
     override fun dispatch(metrics: List<Metric>) {
@@ -25,6 +30,6 @@ class ConsoleMetricsDispatcher : IMetricsDispatcher {
             appendln(String.format("\t%-25s %-10s %s", "-------------------------", "----------", "----------"))
             appendln()
         }
-        println(output)
+        logger.lifecycle(output)
     }
 }

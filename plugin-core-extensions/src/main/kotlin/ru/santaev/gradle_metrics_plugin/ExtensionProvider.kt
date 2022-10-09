@@ -17,7 +17,8 @@ class ExtensionProvider: IExtensionsProvider {
             TasksCountMetricCollector::class.java,
             ConfigurableFileSizeMetricCollector::class.java,
             TaskNamesMetricCollector::class.java,
-            ProjectMetricCollector::class.java
+            ProjectMetricCollector::class.java,
+            CustomMetricCollector::class.java
         )
     }
 

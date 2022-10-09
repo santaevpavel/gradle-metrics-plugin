@@ -48,9 +48,11 @@ task DelayTask {
 
 jar.dependsOn(DelayTask)
 
+def isRunOnCi = false
+
 metrics {
     collectors {
-        BuildTime {
+        Build {
             id = "bb"
         }
         TasksCount
@@ -66,6 +68,10 @@ metrics {
         TaskNames
         TasksCount
         ProjectProperties
+        /*Custom {
+            metricId = "CI"
+            value = isRunOnCi
+        }*/
     }
     dispatchers {
         ConsoleDispatcher
