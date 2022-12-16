@@ -9,7 +9,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "ru.santaev.gradle-metrics-plugin:gradle-metrics-plugin:0.1.0"
+        classpath "ru.santaev.gradle-metrics-plugin:gradle-metrics-plugin:0.2.0"
     }
 }
 
@@ -48,7 +48,7 @@ dependencies {
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
     testImplementation "org.amshove.kluent:kluent:1.60"
 
-    gradleMetricsPluginExtension "ru.santaev.gradle-metrics-plugin:core-extension:0.1.0"
+    gradleMetricsPluginExtension "ru.santaev.gradle-metrics-plugin:core-extension:0.2.0"
     gradleMetricsPluginExtension "ru.santaev.gradle-metrics-plugin:amplitude-extension:0.1.0"
 }
 
