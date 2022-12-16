@@ -5,7 +5,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "ru.santaev.gradle-metrics-plugin:gradle-metrics-plugin:0.1.0"
+        classpath "ru.santaev.gradle-metrics-plugin:gradle-metrics-plugin:0.2.0"
     }
 }
 
@@ -28,7 +28,7 @@ repositories {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     testImplementation "junit:junit:4.12"
-    gradleMetricsPluginExtension "ru.santaev.gradle-metrics-plugin:core-extension:0.1.0"
+    gradleMetricsPluginExtension "ru.santaev.gradle-metrics-plugin:core-extension:0.2.0"
     gradleMetricsPluginExtension "ru.santaev.gradle-metrics-plugin:amplitude-extension:0.1.0"
 }
 

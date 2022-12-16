@@ -23,7 +23,7 @@ plugins {
 apply plugin: 'ru.santaev.gradle-metrics-plugin'
 
 group 'ru.santaev.gradle-metrics-plugin'
-version '0.1.0'
+version '0.2.0'
 
 repositories {
     mavenCentral()
@@ -83,7 +83,7 @@ publishing {
             project.shadow.component(publication)
             groupId 'ru.santaev.gradle-metrics-plugin'
             artifactId 'gradle-metrics-plugin'
-            version '0.1.0'
+            version project.version
         }
     }
 }

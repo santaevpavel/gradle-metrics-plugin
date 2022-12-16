@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'ru.santaev.gradle-metrics-plugin'
-version '0.1.0'
+version '0.2.0'
 
 repositories {
     mavenCentral()
@@ -50,7 +50,7 @@ publishing {
             artifact tasks.getByName("shadowJar")
             groupId 'ru.santaev.gradle-metrics-plugin'
             artifactId 'core-extension'
-            version '0.1.0'
+            version project.version
         }
     }
 }
