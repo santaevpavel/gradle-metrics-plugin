@@ -38,28 +38,28 @@ class TasksCountMetricCollector : BaseMetricCollector() {
             LongMetric(
                 id = TASKS_COUNT_METRIC_ID,
                 value = tasksCounter.tasksCount.toLong(),
-                unit = MetricUnit.Pieces
+                unit = MetricUnit.None
             )
         )
         metricsStore?.add(
             LongMetric(
                 id = SUCCESSFUL_TASKS_COUNT_METRIC_ID,
                 value = tasksCounter.successfulTaskCount.toLong(),
-                unit = MetricUnit.Pieces
+                unit = MetricUnit.None
             )
         )
         metricsStore?.add(
             LongMetric(
                 id = UP_TO_DATE_TASKS_COUNT_METRIC_ID,
                 value = tasksCounter.upToDateTaskCount.toLong(),
-                unit = MetricUnit.Pieces
+                unit = MetricUnit.None
             )
         )
         metricsStore?.add(
             LongMetric(
                 id = FAILED_TASKS_COUNT_METRIC_ID,
                 value = tasksCounter.failedTaskCount.toLong(),
-                unit = MetricUnit.Pieces
+                unit = MetricUnit.None
             )
         )
     }

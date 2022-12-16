@@ -71,10 +71,10 @@ class JUnitTestMetricsCollector : BaseMetricCollector() {
 
     private fun saveMetrics(testsCount: Int, failedTestsCount: Int, skippedTestsCount: Int, successTestsCount: Int) {
         with(metricsStore ?: return) {
-            add(LongMetric(METRIC_ID_TESTS_COUNT, testsCount.toLong(), MetricUnit.Pieces))
-            add(LongMetric(METRIC_ID_FAILED_TESTS_COUNT, failedTestsCount.toLong(), MetricUnit.Pieces))
-            add(LongMetric(METRIC_ID_SKIPPED_TESTS_COUNT, skippedTestsCount.toLong(), MetricUnit.Pieces))
-            add(LongMetric(METRIC_ID_SUCCESS_TESTS_COUNT, successTestsCount.toLong(), MetricUnit.Pieces))
+            add(LongMetric(METRIC_ID_TESTS_COUNT, testsCount.toLong(), MetricUnit.None))
+            add(LongMetric(METRIC_ID_FAILED_TESTS_COUNT, failedTestsCount.toLong(), MetricUnit.None))
+            add(LongMetric(METRIC_ID_SKIPPED_TESTS_COUNT, skippedTestsCount.toLong(), MetricUnit.None))
+            add(LongMetric(METRIC_ID_SUCCESS_TESTS_COUNT, successTestsCount.toLong(), MetricUnit.None))
         }
     }
 

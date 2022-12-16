@@ -18,8 +18,6 @@ sealed class MetricUnit(val name: String) {
 
     object Seconds : MetricUnit("seconds")
 
-    object Pieces : MetricUnit("pieces")
-
     object Kilobytes : MetricUnit("kilobytes")
 
     class Custom(name: String) : MetricUnit(name)
