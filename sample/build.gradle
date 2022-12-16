@@ -49,6 +49,7 @@ task DelayTask {
 jar.dependsOn(DelayTask)
 
 def isRunOnCi = false
+def metricsOutputPath = buildDir.path + "/output/metricsOutput.txt"
 
 metrics {
     collectors {
@@ -75,6 +76,10 @@ metrics {
     }
     dispatchers {
         ConsoleDispatcher
+        JsonFileDispatcher
+        JsonFileDispatcher {
+            path = metricsOutputPath
+        }
         AmplitudeDispatcher {
             apiKey = "2bdf01688c5ce7c59e820c426b5d5a3f"
         }

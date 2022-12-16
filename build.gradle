@@ -1,5 +1,5 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.3.21' apply false
+    id 'org.jetbrains.kotlin.jvm' version '1.6.0' apply false
     id 'com.github.johnrengelman.shadow' version '5.2.0' apply false
 }
 
@@ -11,3 +11,17 @@ repositories {
 }
 
 ext.localMavenPath = "$rootProject.buildDir/repo"
+
+def findLocalProperty(String property) {
+    Properties properties = new Properties()
+    File propertiesFile = project.file('local.properties')
+    if (propertiesFile.exists()) {
+        properties.load(propertiesFile.newDataInputStream())
+    }
+    String value = properties.getProperty(property)
+    if (value != null) {
+        return value
+    } else {
+        return findProperty(property)
+    }
+}
