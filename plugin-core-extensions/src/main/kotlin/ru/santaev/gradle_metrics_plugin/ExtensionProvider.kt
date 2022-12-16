@@ -5,6 +5,7 @@ import ru.santaev.gradle_metrics_plugin.api.collector.IMetricsCollector
 import ru.santaev.gradle_metrics_plugin.api.dispatcher.IMetricsDispatcher
 import ru.santaev.gradle_metrics_plugin.collector.*
 import ru.santaev.gradle_metrics_plugin.dispatcher.ConsoleMetricsDispatcher
+import ru.santaev.gradle_metrics_plugin.dispatcher.JsonFileMetricsDispatcher
 
 @Suppress("unused")
 class ExtensionProvider: IExtensionsProvider {
@@ -24,7 +25,8 @@ class ExtensionProvider: IExtensionsProvider {
 
     override fun provideDispatcher(): List<Class<out IMetricsDispatcher>> {
         return listOf(
-            ConsoleMetricsDispatcher::class.java
+            ConsoleMetricsDispatcher::class.java,
+            JsonFileMetricsDispatcher::class.java
         )
     }
 }
