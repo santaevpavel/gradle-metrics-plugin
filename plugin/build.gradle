@@ -9,7 +9,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "ru.santaev.gradle-metrics-plugin:gradle-metrics-plugin:0.2.0"
+        // classpath "com.santaev.gradle-metrics-plugin:gradle-metrics-plugin:0.2.0"
     }
 }
 
@@ -20,9 +20,9 @@ plugins {
     id 'com.github.johnrengelman.shadow'
 }
 
-apply plugin: 'ru.santaev.gradle-metrics-plugin'
+// apply plugin: 'com.santaev.gradle-metrics-plugin'
 
-group 'ru.santaev.gradle-metrics-plugin'
+group 'com.santaev.gradle-metrics-plugin'
 version '0.2.0'
 
 repositories {
@@ -48,8 +48,8 @@ dependencies {
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
     testImplementation "org.amshove.kluent:kluent:1.60"
 
-    gradleMetricsPluginExtension "ru.santaev.gradle-metrics-plugin:core-extension:0.2.0"
-    gradleMetricsPluginExtension "ru.santaev.gradle-metrics-plugin:amplitude-extension:0.1.0"
+    // gradleMetricsPluginExtension "com.santaev.gradle-metrics-plugin:core-extension:0.2.0"
+    // gradleMetricsPluginExtension "com.santaev.gradle-metrics-plugin:amplitude-extension:0.1.0"
 }
 
 compileKotlin {
@@ -81,13 +81,14 @@ publishing {
     publications {
         maven(MavenPublication) { publication ->
             project.shadow.component(publication)
-            groupId 'ru.santaev.gradle-metrics-plugin'
+            groupId 'com.santaev.gradle-metrics-plugin'
             artifactId 'gradle-metrics-plugin'
             version project.version
         }
     }
 }
 
+/*
 metrics {
     collectors {
         Build
@@ -102,3 +103,4 @@ metrics {
         }
     }
 }
+*/
