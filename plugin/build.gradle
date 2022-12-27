@@ -17,6 +17,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm'
     id 'kotlin'
     id 'maven-publish'
+    id 'com.gradle.plugin-publish'
     id 'com.github.johnrengelman.shadow'
 }
 
@@ -87,6 +88,23 @@ publishing {
         }
     }
 }
+
+
+gradlePlugin {
+    website = 'https://github.com/santaevpavel/gradle-metrics-plugin'
+    vcsUrl = 'https://github.com/santaevpavel/gradle-metrics-plugin'
+    plugins {
+        gradleMetricsPlugin {
+            id = 'com.santaev.gradle-metrics-plugin'
+            displayName = 'Gradle Metrics Plugin'
+            description = 'This plugin allows collect and display/dispatch build metrics.'
+            tags.set(['metrics', 'build'])
+            implementationClass = 'com.santaev.gradle_metrics_plugin.GradleMetricsPlugin'
+        }
+    }
+}
+
+
 
 /*
 metrics {

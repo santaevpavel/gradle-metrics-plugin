@@ -5,7 +5,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "com.santaev.gradle-metrics-plugin:gradle-metrics-plugin:0.2.0"
+        classpath "com.santaev.gradle-metrics-plugin:gradle-metrics-plugin:1.0.0"
     }
 }
 
@@ -15,7 +15,7 @@ plugins {
 
 apply plugin: 'com.santaev.gradle-metrics-plugin'
 
-group 'com.santaev.gradle-metrics-plugin'
+group 'com.santaev.gradle-metrics-plugin.sample'
 version '0.1.0'
 
 repositories {
@@ -28,8 +28,8 @@ repositories {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     testImplementation "junit:junit:4.12"
-    gradleMetricsPluginExtension "com.santaev.gradle-metrics-plugin:core-extension:0.2.0"
-    gradleMetricsPluginExtension "com.santaev.gradle-metrics-plugin:amplitude-extension:0.1.0"
+    gradleMetricsPluginExtension "com.santaev.gradle-metrics-plugin:core-extension:1.0.0"
+    gradleMetricsPluginExtension "com.santaev.gradle-metrics-plugin:amplitude-extension:1.0.0"
 }
 
 compileKotlin {
@@ -69,10 +69,6 @@ metrics {
         TaskNames
         TasksCount
         ProjectProperties
-        /*Custom {
-            metricId = "CI"
-            value = isRunOnCi
-        }*/
     }
     dispatchers {
         ConsoleDispatcher

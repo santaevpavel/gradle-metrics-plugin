@@ -64,6 +64,7 @@ private class BuildTimeCalculatorListener(
     private var buildStartTime = 0L
     private var isBuildStarted = false
 
+    @Deprecated("Deprecated in Java")
     override fun buildFinished(result: BuildResult) {
         val buildTime = System.currentTimeMillis() - buildStartTime
         onBuildFinished(buildTime)
