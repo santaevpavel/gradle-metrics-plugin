@@ -10,9 +10,9 @@ Also the plugin provides API to implement your own collectors and dispatchers.
 
 ![Terminal](https://raw.githubusercontent.com/santaevpavel/gradle-metrics-plugin/master/raw/terminal_output.png)
 
-### Usage
+# Usage
 
-#### Add Github repository and classpath
+## Add Github repository and classpath
 
 ```groovy
 buildscript {
@@ -33,13 +33,13 @@ buildscript {
 }
 ```
 
-#### Apply plugin
+## Apply plugin
 
 ```groovy
 apply plugin: 'com.santaev.gradle-metrics-plugin'
 ```
 
-#### Configure plugin
+## Configure plugin
 
 ```groovy
 metrics {
@@ -56,7 +56,7 @@ metrics {
 
 ```
 
-### Built-in collectors
+## Built-in collectors
 
 1. Build time
 2. Build result
