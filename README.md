@@ -12,7 +12,7 @@ Also the plugin provides API to implement your own collectors and dispatchers.
 
 # Usage
 
-## Add Github repository and classpath
+### Add Github repository and classpath
 
 ```groovy
 buildscript {
@@ -33,13 +33,13 @@ buildscript {
 }
 ```
 
-## Apply plugin
+### Apply plugin
 
 ```groovy
 apply plugin: 'com.santaev.gradle-metrics-plugin'
 ```
 
-## Configure plugin
+### Configure plugin
 
 ```groovy
 metrics {
@@ -55,6 +55,7 @@ metrics {
 }
 
 ```
+### Collectors and dispatchers
 
 ## Built-in collectors
 
