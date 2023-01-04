@@ -1,6 +1,6 @@
 # gradle-metrics-plugin
 
-![tests](https://github.com/santaevpavel/gradle-metrics-plugin/actions/workflows/test.yml/badge.svg)
+![tests](https://github.com/santaevpavel/gradle-metrics-plugin/actions/workflows/test.yml/badge.svg?branch=master)
 
 This plugin allows to collect build metrics (like build time, tasks, etc) and dispatch to
 different sources.
