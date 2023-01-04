@@ -1,7 +1,4 @@
 # gradle-metrics-plugin
-Experimental gradle plugin to fetch and save metrics
-
-# What is it?
 
 This plugin allows to collect build metrics (like build time, tasks, etc) and dispatch to
 different sources.
