@@ -1,4 +1,4 @@
-name: Publish package to Gradle plugin repository
+name: Publish package to Gradle Plugin Repository
 on:
   workflow_dispatch:
 
