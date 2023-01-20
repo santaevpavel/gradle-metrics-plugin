@@ -104,6 +104,7 @@ gradlePlugin {
     }
 }
 
+def isRunOnCi = (findProperty("isCi") != null).toString()
 
 metrics {
     collectors {
@@ -111,6 +112,10 @@ metrics {
         TaskNames
         TasksCount
         ProjectProperties
+        Custom {
+            metricId = "isCi"
+            value = isRunOnCi
+        }
     }
     dispatchers {
         ConsoleDispatcher

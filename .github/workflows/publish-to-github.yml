@@ -17,7 +17,7 @@ jobs:
       - name: Publish package
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: plugin:publishMavenPublicationToGithubRepository
+          arguments: plugin:publishMavenPublicationToGithubRepository -PisCi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   publish-core-extensions:
@@ -34,7 +34,7 @@ jobs:
       - name: Publish package
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: plugin-core-extensions:publishMavenPublicationToGithubRepository
+          arguments: plugin-core-extensions:publishMavenPublicationToGithubRepository -PisCi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   publish-extensions-amplitude:
@@ -51,6 +51,6 @@ jobs:
       - name: Publish package
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: plugin-extension-amplitude:publishMavenPublicationToGithubRepository
+          arguments: plugin-extension-amplitude:publishMavenPublicationToGithubRepository -PisCi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

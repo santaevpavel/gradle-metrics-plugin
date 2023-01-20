@@ -48,7 +48,7 @@ task DelayTask {
 
 jar.dependsOn(DelayTask)
 
-def isRunOnCi = false
+def isRunOnCi = (findProperty("isCi") != null).toString()
 def metricsOutputPath = buildDir.path + "/output/metricsOutput.txt"
 
 metrics {
@@ -69,6 +69,10 @@ metrics {
         TaskNames
         TasksCount
         ProjectProperties
+        Custom {
+            metricId = "isCi"
+            value = isRunOnCi
+        }
     }
     dispatchers {
         ConsoleDispatcher
