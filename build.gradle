@@ -4,7 +4,7 @@ plugins {
     id 'com.gradle.plugin-publish' version '1.1.0'
 }
 
-group 'com.santaev.gradle-metrics-plugin'
+group 'io.github.santaevpavel.gradle-metrics-plugin'
 version '0.1.0'
 
 repositories {

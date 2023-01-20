@@ -4,7 +4,7 @@ plugins {
     id 'maven-publish'
 }
 
-group 'com.santaev.gradle-metrics-plugin'
+group 'io.github.santaevpavel.gradle-metrics-plugin'
 version '1.0.0'
 
 repositories {
@@ -49,7 +49,7 @@ publishing {
     publications {
         maven(MavenPublication) { publication ->
             artifact tasks.getByName("shadowJar")
-            groupId 'com.santaev.gradle-metrics-plugin'
+            groupId 'io.github.santaevpavel.gradle-metrics-plugin'
             artifactId 'amplitude-extension'
             version project.version
         }

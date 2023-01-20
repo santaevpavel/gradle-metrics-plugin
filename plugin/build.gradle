@@ -9,7 +9,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "com.santaev.gradle-metrics-plugin:gradle-metrics-plugin:1.0.0"
+        // classpath "io.github.santaevpavel.gradle-metrics-plugin:gradle-metrics-plugin:1.0.0"
     }
 }
 
@@ -21,9 +21,9 @@ plugins {
     id 'com.github.johnrengelman.shadow'
 }
 
-apply plugin: 'com.santaev.gradle-metrics-plugin'
+//apply plugin: 'io.github.santaevpavel.gradle-metrics-plugin'
 
-group 'com.santaev.gradle-metrics-plugin'
+group 'io.github.santaevpavel.gradle-metrics-plugin'
 version '1.0.0'
 
 repositories {
@@ -49,8 +49,8 @@ dependencies {
     testImplementation "io.mockk:mockk:1.13.3"
     testImplementation "org.amshove.kluent:kluent:1.60"
 
-    gradleMetricsPluginExtension "com.santaev.gradle-metrics-plugin:core-extension:1.0.0"
-    gradleMetricsPluginExtension "com.santaev.gradle-metrics-plugin:amplitude-extension:1.0.0"
+    // gradleMetricsPluginExtension "io.github.santaevpavel.gradle-metrics-plugin:core-extension:1.0.0"
+    // gradleMetricsPluginExtension "io.github.santaevpavel.gradle-metrics-plugin:amplitude-extension:1.0.0"
 }
 
 compileKotlin {
@@ -82,7 +82,7 @@ publishing {
     publications {
         maven(MavenPublication) { publication ->
             project.shadow.component(publication)
-            groupId 'com.santaev.gradle-metrics-plugin'
+            groupId 'io.github.santaevpavel.gradle-metrics-plugin'
             artifactId 'gradle-metrics-plugin'
             version project.version
         }
@@ -95,7 +95,7 @@ gradlePlugin {
     vcsUrl = 'https://github.com/santaevpavel/gradle-metrics-plugin'
     plugins {
         gradleMetricsPlugin {
-            id = 'com.santaev.gradle-metrics-plugin'
+            id = 'io.github.santaevpavel.gradle-metrics-plugin'
             displayName = 'Gradle Metrics Plugin'
             description = 'This plugin allows collect and display/dispatch build metrics.'
             tags.set(['metrics', 'build'])
@@ -104,6 +104,7 @@ gradlePlugin {
     }
 }
 
+/*
 metrics {
     collectors {
         Build
@@ -118,3 +119,4 @@ metrics {
         }
     }
 }
+*/

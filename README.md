@@ -27,7 +27,7 @@ buildscript {
     }
     // ...
     dependencies {
-        classpath "com.santaev.gradle-metrics-plugin:gradle-metrics-plugin:1.0.0"
+        classpath "io.github.santaevpavel.gradle-metrics-plugin:gradle-metrics-plugin:1.0.0"
     }
 }
 ```
@@ -35,7 +35,7 @@ buildscript {
 ### Apply plugin
 
 ```groovy
-apply plugin: 'com.santaev.gradle-metrics-plugin'
+apply plugin: 'io.github.santaevpavel.gradle-metrics-plugin'
 ```
 
 ### Configure plugin
@@ -104,7 +104,7 @@ Add Github properties to local.properties
 ```groovy
 dependencies {
     // ...
-    gradleMetricsPluginExtension "com.santaev.gradle-metrics-plugin:amplitude-extension:1.0.0"
+    gradleMetricsPluginExtension "io.github.santaevpavel.gradle-metrics-plugin:amplitude-extension:1.0.0"
 }
 ```
 3. Configure amplitude extension

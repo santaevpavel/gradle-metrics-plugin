@@ -3,7 +3,7 @@ plugins {
     id 'com.github.johnrengelman.shadow'
 }
 
-group 'com.santaev.gradle-metrics-plugin'
+group 'io.github.santaevpavel.gradle-metrics-plugin'
 version '1.0.0'
 
 repositories {
