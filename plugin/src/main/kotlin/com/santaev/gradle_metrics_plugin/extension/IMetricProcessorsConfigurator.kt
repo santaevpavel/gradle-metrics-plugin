@@ -1,12 +1,13 @@
 package com.santaev.gradle_metrics_plugin.extension
 
-import org.gradle.api.Project
-import org.gradle.api.logging.Logger
 import com.santaev.gradle_metrics_plugin.GradleMetricsPluginExtension
 import com.santaev.gradle_metrics_plugin.MetricsStore
 import com.santaev.gradle_metrics_plugin.api.Config
+import com.santaev.gradle_metrics_plugin.api.Plugin
 import com.santaev.gradle_metrics_plugin.api.collector.IMetricsCollector
 import com.santaev.gradle_metrics_plugin.api.dispatcher.IMetricsDispatcher
+import org.gradle.api.Project
+import org.gradle.api.logging.Logger
 
 interface IMetricProcessorsConfigurator {
 
@@ -14,7 +15,8 @@ interface IMetricProcessorsConfigurator {
         metricProcessorsLoadInfo: MetricProcessorsLoadInfo,
         configuration: GradleMetricsPluginExtension,
         metricsStore: MetricsStore,
-        project: Project
+        project: Project,
+        plugin: Plugin
     ): MetricProcessors
 }
 
@@ -26,7 +28,8 @@ class MetricProcessorConfigurator : IMetricProcessorsConfigurator {
         metricProcessorsLoadInfo: MetricProcessorsLoadInfo,
         configuration: GradleMetricsPluginExtension,
         metricsStore: MetricsStore,
-        project: Project
+        project: Project,
+        plugin: Plugin
     ): MetricProcessors {
         logger = project.logger
         val collectorsWithConfig = loadCollectors(metricProcessorsLoadInfo.collectors, configuration)
@@ -36,8 +39,8 @@ class MetricProcessorConfigurator : IMetricProcessorsConfigurator {
             collectors = collectorsWithConfig.map { it.first },
             dispatchers = dispatchersWithConfig.map { it.first }
         )
-        initCollectors(collectorsWithConfig, metricsStore, project)
-        initDispatchers(dispatchersWithConfig, project)
+        initCollectors(collectorsWithConfig, metricsStore, project, plugin)
+        initDispatchers(dispatchersWithConfig, project, plugin)
         logNotExistingCollectors(metricProcessorsLoadInfo.collectors, configuration)
         logCollectorsAndDispatchers(processors)
         return processors
@@ -76,21 +79,23 @@ class MetricProcessorConfigurator : IMetricProcessorsConfigurator {
     private fun initCollectors(
         collectorsToConfig: List<Pair<IMetricsCollector, Config>>,
         metricsStore: MetricsStore,
-        project: Project
+        project: Project,
+        plugin: Plugin
     ) {
         collectorsToConfig.forEach { (collector, config) ->
             logger.info("Initializing ${collector::class.java.simpleName}. Config = $config")
-            collector.init(config, metricsStore, project)
+            collector.init(config, metricsStore, project, plugin)
         }
     }
 
     private fun initDispatchers(
         dispatchersToConfig: List<Pair<IMetricsDispatcher, Config>>,
-        project: Project
+        project: Project,
+        plugin: Plugin
     ) {
         dispatchersToConfig.forEach { (dispatcher, config) ->
             logger.info("Initializing ${dispatcher::class.java.simpleName}. Config = $config")
-            dispatcher.init(config, project)
+            dispatcher.init(config, project, plugin)
         }
     }
 

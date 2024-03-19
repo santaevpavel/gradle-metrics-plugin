@@ -5,7 +5,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "io.github.santaevpavel.gradle-metrics-plugin:gradle-metrics-plugin:1.0.0"
+        classpath "io.github.santaevpavel.gradle-metrics-plugin:gradle-metrics-plugin:2.0.0"
     }
 }
 
@@ -28,16 +28,16 @@ repositories {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     testImplementation "junit:junit:4.12"
-    gradleMetricsPluginExtension "io.github.santaevpavel.gradle-metrics-plugin:core-extension:1.0.0"
+    gradleMetricsPluginExtension "io.github.santaevpavel.gradle-metrics-plugin:core-extension:2.0.0"
     gradleMetricsPluginExtension "io.github.santaevpavel.gradle-metrics-plugin:amplitude-extension:1.0.0"
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "17"
 }
 
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "17"
 }
 
 task DelayTask {

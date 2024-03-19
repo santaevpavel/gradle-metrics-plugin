@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'io.github.santaevpavel.gradle-metrics-plugin'
-version '1.0.0'
+version '2.0.0'
 
 repositories {
     mavenCentral()
@@ -20,11 +20,11 @@ dependencies {
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "17"
 }
 
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "17"
 }
 
 shadowJar {

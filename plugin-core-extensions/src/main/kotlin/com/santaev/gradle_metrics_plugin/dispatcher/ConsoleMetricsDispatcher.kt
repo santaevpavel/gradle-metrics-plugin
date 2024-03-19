@@ -5,6 +5,7 @@ import org.gradle.api.logging.Logger
 import com.santaev.gradle_metrics_plugin.api.Config
 import com.santaev.gradle_metrics_plugin.api.Metric
 import com.santaev.gradle_metrics_plugin.api.MetricProcessorId
+import com.santaev.gradle_metrics_plugin.api.Plugin
 import com.santaev.gradle_metrics_plugin.api.dispatcher.IMetricsDispatcher
 
 @MetricProcessorId("ConsoleDispatcher")
@@ -12,7 +13,7 @@ class ConsoleMetricsDispatcher : IMetricsDispatcher {
 
     private lateinit var logger: Logger
 
-    override fun init(config: Config, project: Project) {
+    override fun init(config: Config, project: Project, plugin: Plugin) {
         logger = project.logger
     }
 

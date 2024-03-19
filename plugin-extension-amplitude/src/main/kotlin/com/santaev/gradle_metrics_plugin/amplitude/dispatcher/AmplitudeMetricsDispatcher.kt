@@ -8,6 +8,7 @@ import org.json.JSONObject
 import com.santaev.gradle_metrics_plugin.api.Config
 import com.santaev.gradle_metrics_plugin.api.Metric
 import com.santaev.gradle_metrics_plugin.api.MetricProcessorId
+import com.santaev.gradle_metrics_plugin.api.Plugin
 import com.santaev.gradle_metrics_plugin.api.dispatcher.BaseMetricDispatcher
 import com.santaev.gradle_metrics_plugin.utils.logger
 import java.util.*
@@ -22,8 +23,8 @@ class AmplitudeMetricsDispatcher : BaseMetricDispatcher() {
     private val userId: String
         get() = UUID.nameUUIDFromBytes(project.rootDir.absolutePath.toByteArray()).toString()
 
-    override fun init(config: Config, project: Project) {
-        super.init(config, project)
+    override fun init(config: Config, project: Project, plugin: Plugin) {
+        super.init(config, project, plugin)
         initAmplitude()
         setupLogger()
     }

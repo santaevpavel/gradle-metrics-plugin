@@ -1,5 +1,6 @@
 package com.santaev.gradle_metrics_plugin
 
+import com.santaev.gradle_metrics_plugin.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.tasks.Classpath
@@ -10,12 +11,14 @@ import com.santaev.gradle_metrics_plugin.utils.logger
 import com.santaev.gradle_metrics_plugin.utils.whenBuildFinished
 import com.santaev.gradle_metrics_plugin.utils.whenEvaluated
 
+
 class GradleMetrics(
     private val project: Project,
     private val configuration: GradleMetricsPluginExtension,
     @Classpath private val pluginClasspath: ConfigurableFileCollection,
     private val metricProcessorsLoader: IMetricProcessorsLoader,
-    private val metricProcessorsConfigurator: IMetricProcessorsConfigurator
+    private val metricProcessorsConfigurator: IMetricProcessorsConfigurator,
+    private val plugin: Plugin
 ) {
 
     private val logger = logger(this)
@@ -38,7 +41,8 @@ class GradleMetrics(
             metricProcessorsLoadInfo,
             configuration,
             metricsStore,
-            project
+            project,
+            plugin
         )
     }
 

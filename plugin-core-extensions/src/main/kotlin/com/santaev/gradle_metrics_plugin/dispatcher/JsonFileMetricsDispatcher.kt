@@ -7,6 +7,7 @@ import org.gradle.api.logging.Logger
 import com.santaev.gradle_metrics_plugin.api.Config
 import com.santaev.gradle_metrics_plugin.api.Metric
 import com.santaev.gradle_metrics_plugin.api.MetricProcessorId
+import com.santaev.gradle_metrics_plugin.api.Plugin
 import com.santaev.gradle_metrics_plugin.api.dispatcher.BaseMetricDispatcher
 import java.io.File
 
@@ -19,8 +20,8 @@ class JsonFileMetricsDispatcher : BaseMetricDispatcher() {
         .setPrettyPrinting()
         .create()
 
-    override fun init(config: Config, project: Project) {
-        super.init(config, project)
+    override fun init(config: Config, project: Project, plugin: Plugin) {
+        super.init(config, project, plugin)
         logger = project.logger
     }
 

@@ -9,7 +9,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "io.github.santaevpavel.gradle-metrics-plugin:gradle-metrics-plugin:1.0.0"
+        //classpath "io.github.santaevpavel.gradle-metrics-plugin:gradle-metrics-plugin:1.0.0"
     }
 }
 
@@ -21,10 +21,10 @@ plugins {
     id 'com.github.johnrengelman.shadow'
 }
 
-apply plugin: 'io.github.santaevpavel.gradle-metrics-plugin'
+//apply plugin: 'io.github.santaevpavel.gradle-metrics-plugin'
 
 group 'io.github.santaevpavel.gradle-metrics-plugin'
-version '1.0.0'
+version '2.0.0'
 
 repositories {
     mavenCentral()
@@ -49,16 +49,16 @@ dependencies {
     testImplementation "io.mockk:mockk:1.13.3"
     testImplementation "org.amshove.kluent:kluent:1.60"
 
-    gradleMetricsPluginExtension "io.github.santaevpavel.gradle-metrics-plugin:core-extension:1.0.0"
-    gradleMetricsPluginExtension "io.github.santaevpavel.gradle-metrics-plugin:amplitude-extension:1.0.0"
+    //gradleMetricsPluginExtension "io.github.santaevpavel.gradle-metrics-plugin:core-extension:1.0.0"
+    //gradleMetricsPluginExtension "io.github.santaevpavel.gradle-metrics-plugin:amplitude-extension:1.0.0"
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "17"
 }
 
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "17"
 }
 
 shadowJar {
@@ -106,6 +106,7 @@ gradlePlugin {
 
 def isRunOnCi = (findProperty("isCi") != null).toString()
 
+/*
 metrics {
     collectors {
         Build
@@ -124,3 +125,4 @@ metrics {
         }
     }
 }
+*/

@@ -7,6 +7,7 @@ import org.gradle.api.execution.TaskExecutionListener
 import org.gradle.api.tasks.TaskState
 import com.santaev.gradle_metrics_plugin.api.collector.BaseMetricCollector
 import com.santaev.gradle_metrics_plugin.utils.logger
+import org.gradle.build.event.BuildEventsListenerRegistry
 
 @MetricProcessorId("TasksCount")
 class TasksCountMetricCollector : BaseMetricCollector() {
@@ -25,8 +26,8 @@ class TasksCountMetricCollector : BaseMetricCollector() {
         }
     }
 
-    override fun init(config: Config, metricsStore: IMetricsStore, project: Project) {
-        super.init(config, metricsStore, project)
+    override fun init(config: Config, metricsStore: IMetricsStore, project: Project, plugin: Plugin) {
+        super.init(config, metricsStore, project, plugin)
         tasksCounter = TasksCountMetricCollectorListener().also { listener ->
             project.gradle.addListener(listener)
         }
