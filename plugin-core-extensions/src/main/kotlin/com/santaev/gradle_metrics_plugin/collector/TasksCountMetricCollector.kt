@@ -1,40 +1,31 @@
 package com.santaev.gradle_metrics_plugin.collector
 
 import com.santaev.gradle_metrics_plugin.api.*
-import org.gradle.api.Project
-import org.gradle.api.Task
-import org.gradle.api.execution.TaskExecutionListener
-import org.gradle.api.tasks.TaskState
 import com.santaev.gradle_metrics_plugin.api.collector.BaseMetricCollector
 import com.santaev.gradle_metrics_plugin.utils.logger
-import org.gradle.build.event.BuildEventsListenerRegistry
+import org.gradle.tooling.events.FinishEvent
+import org.gradle.tooling.events.OperationCompletionListener
+import org.gradle.tooling.events.task.TaskFailureResult
+import org.gradle.tooling.events.task.TaskFinishEvent
+import org.gradle.tooling.events.task.TaskSkippedResult
+import org.gradle.tooling.events.task.TaskSuccessResult
 
 @MetricProcessorId("TasksCount")
 class TasksCountMetricCollector : BaseMetricCollector() {
 
-    private val logger = logger(this)
-    private var tasksCounter: TasksCountMetricCollectorListener? = null
-
     init {
         afterInit {
-            tasksCounter = TasksCountMetricCollectorListener().also { listener ->
-                project.gradle.addListener(listener)
+            val tasksCounter = TasksCounter()
+            val tasksCounterProvider = project.provider { tasksCounter }
+            plugin.getBuildEventsListenerRegistry().onTaskCompletion(tasksCounterProvider)
+
+            afterBuild {
+                collectMetrics(tasksCounter)
             }
         }
-        afterBuild {
-            collectMetrics()
-        }
     }
 
-    override fun init(config: Config, metricsStore: IMetricsStore, project: Project, plugin: Plugin) {
-        super.init(config, metricsStore, project, plugin)
-        tasksCounter = TasksCountMetricCollectorListener().also { listener ->
-            project.gradle.addListener(listener)
-        }
-    }
-
-    private fun collectMetrics() {
-        val tasksCounter = tasksCounter ?: return
+    private fun collectMetrics(tasksCounter: TasksCounter) {
         metricsStore?.add(
             LongMetric(
                 id = TASKS_COUNT_METRIC_ID,
@@ -63,24 +54,44 @@ class TasksCountMetricCollector : BaseMetricCollector() {
                 unit = MetricUnit.None
             )
         )
+        metricsStore?.add(
+            LongMetric(
+                id = SKIPPED_TASKS_COUNT_METRIC_ID,
+                value = tasksCounter.skippedTaskCount.toLong(),
+                unit = MetricUnit.None
+            )
+        )
     }
 
-    private inner class TasksCountMetricCollectorListener : TaskExecutionListener {
+    private class TasksCounter: OperationCompletionListener {
 
         var tasksCount = 0
         var successfulTaskCount = 0
         var upToDateTaskCount = 0
+        var fromCacheTaskCount = 0
+        var skippedTaskCount = 0
         var failedTaskCount = 0
 
-        override fun beforeExecute(task: Task) {
-            tasksCount++
-        }
-
-        override fun afterExecute(task: Task, state: TaskState) {
-            when {
-                state.upToDate -> upToDateTaskCount++
-                state.failure != null -> failedTaskCount++
-                else -> successfulTaskCount++
+        override fun onFinish(event: FinishEvent) {
+            if (event !is TaskFinishEvent) {
+                return
+            }
+            when (val result = event.result) {
+                is TaskSuccessResult -> {
+                    tasksCount++
+                    when {
+                        result.isUpToDate -> upToDateTaskCount++
+                        result.isFromCache -> fromCacheTaskCount++
+                    }
+                }
+                is TaskFailureResult -> {
+                    tasksCount++
+                    failedTaskCount++
+                }
+                is TaskSkippedResult -> {
+                    tasksCount++
+                    skippedTaskCount++
+                }
             }
         }
     }
@@ -90,6 +101,7 @@ class TasksCountMetricCollector : BaseMetricCollector() {
         private const val SUCCESSFUL_TASKS_COUNT_METRIC_ID = "SuccessfulTasksCount"
         private const val UP_TO_DATE_TASKS_COUNT_METRIC_ID = "UpToDateTasksCount"
         private const val FAILED_TASKS_COUNT_METRIC_ID = "FailedTasksCount"
+        private const val SKIPPED_TASKS_COUNT_METRIC_ID = "SkippedTasksCount"
     }
 }
 

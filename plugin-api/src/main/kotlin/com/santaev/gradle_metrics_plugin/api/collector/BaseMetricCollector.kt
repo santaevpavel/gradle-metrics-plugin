@@ -35,7 +35,7 @@ abstract class BaseMetricCollector : IMetricsCollector {
         this.config = config
         this.plugin = plugin
 
-        val environment = Environment(metricsStore, project, config)
+        val environment = Environment(metricsStore, project, config, plugin)
         initListeners.forEach { it.invoke(environment) }
 
         plugin.getFlowScope().always(
@@ -50,7 +50,7 @@ abstract class BaseMetricCollector : IMetricsCollector {
     }
 
     private fun onBuildFinish(result: BuildWorkResult) {
-        val environment = Environment(metricsStore!!, project!!, config!!)
+        val environment = Environment(metricsStore!!, project!!, config!!, plugin!!)
         buildFinishListeners.forEach { it.invoke(environment, result.toBuildResult()) }
     }
 
