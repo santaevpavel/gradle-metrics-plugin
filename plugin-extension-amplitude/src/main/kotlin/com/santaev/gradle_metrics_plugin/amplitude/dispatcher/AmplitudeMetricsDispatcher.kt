@@ -62,6 +62,6 @@ class AmplitudeMetricsDispatcher : BaseMetricDispatcher() {
 
     companion object {
         private const val BUILD_FINISHED_EVENT_NAME = "BuildFinished"
-        private const val DISPATCHING_DELAY_MILLIS = 5000L
+        private const val DISPATCHING_DELAY_MILLIS = 2000L
     }
 }
